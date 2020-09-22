@@ -15,9 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-import qg_interface
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('restful/', include(qg_interface.urls))
+    path('restful/', include('qg_interface.urls'))
 ]
