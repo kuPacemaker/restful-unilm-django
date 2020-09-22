@@ -1,5 +1,8 @@
 import socket
 
+HOST = '117.16.136.170'
+PORT = 2593
+
 def call_qg_interface(qa, iters):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.settimeout(10.0)
@@ -12,5 +15,5 @@ def call_qg_interface(qa, iters):
         question.append(q)
         
     client_socket.close()
-    
+
     return question
