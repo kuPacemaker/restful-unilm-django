@@ -10,5 +10,5 @@ def question_generation(request):
         text = request.data
         bkd = BaseKnowledge(text)
         bkd.attach_question()
-        return Response(bkd)
+        return Response(bkd.__dict__)
     return Response({"message": "The GET method is not appropriate."})
