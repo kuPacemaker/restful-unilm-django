@@ -8,5 +8,5 @@ def question_generation(request):
     if request.method == 'POST':
         text = request.data
         bkd = BaseKnowledge(text)
-        return Response(bkd.jsonate())
-    return Response({"error": "The GET method is not appropriate."})
+        return Response({"message": "success", "data": bkd.jsonate()})
+    return Response({"message": "The GET method is not appropriate."})
