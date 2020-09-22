@@ -51,7 +51,7 @@ class Passage:
     def _noun_extract(self, text):
         tokenized = nltk.word_tokenize(text)
         nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if pos[:2]=='NN']
-        noun_phrases = TextBlob(msg).noun_phrases
+        noun_phrases = TextBlob(text).noun_phrases
         return nouns + noun_phrases
     
     def attach_question(self):
