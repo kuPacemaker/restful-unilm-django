@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from qg_interface.models import BaseKnowledge
 
 # Create your views here.
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def question_generation(request):
     if request.method == 'POST':
         text = request.data
