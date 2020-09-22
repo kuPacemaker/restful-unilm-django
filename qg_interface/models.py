@@ -4,6 +4,8 @@ from textblob import TextBlob
 import time
 import json
 
+from .qgcall import call_qg_interface
+
 # Create your models here.
 class BaseKnowledge:
     
