@@ -41,7 +41,7 @@ class BaseKnowledge:
             print(passage.attach_question())
             
     def jsonate(self):
-        return json.dumps(self, default=lambda o: o.__dict__, indent = 4)
+        return json.loads(json.dumps(self, default=lambda o: o.__dict__, indent = 4))
         
 class Passage:
     
