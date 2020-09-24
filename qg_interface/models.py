@@ -70,15 +70,17 @@ class Passage:
         #print(self.nouns)
     
     def attach_question(self):
-        answer_limit = min(5, len(self.nouns))
-        answers_send = [answer for num, answer in enumerate(self.nouns) if num < answer_limit]
-        request = "".join([self._seperated(self.text, answer) for answer in answers_send])
-        
+        request, answers = self.qg_query_formatted(6)
         questions = call_qg_interface(request)
         print(questions)
         
-        self.aqset = list(zip(answers_send, questions))
+        self.aqset = list(zip(answers, questions))
         return True
+    
+    def qg_query_formatted(self, limit=5):
+        answer_limit = min(limit, len(self.nouns))
+        answer_send = [answer for num, answer in enumerate(self.nouns) if num < answer_limit]
+        return "".join([self._seperated(self.text, answer) for answer in answer_send]), answer_send
     
     def _seperated(self, msg1, msg2):
         return "{} [SEP] {}\n".format(msg1, msg2)
