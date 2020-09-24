@@ -53,7 +53,7 @@ class Passage:
     def _noun_extract(self, text):
         tokenized = nltk.word_tokenize(text)
         nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if pos[:2]=='NN']
-        noun_phrases = TextBlob(text).noun_phrases
+        noun_phrases = TextBlob(msg).noun_phrases
         return nouns + noun_phrases
     
     def attach_question(self):
@@ -61,15 +61,11 @@ class Passage:
         answers_send = [answer for num, answer in enumerate(self.nouns) if num < answer_limit]
         request = "".join([self._seperated(self.text, answer) for answer in answers_send])
         
-        questions = call_qg_interface(request, 5)
+        questions = call_qg_interface(request)
+        print(questions)
         
         self.aqset = list(zip(answers_send, questions))
-        
-        time.sleep(1)
         return True
     
     def _seperated(self, msg1, msg2):
         return "{} [SEP] {}\n".format(msg1, msg2)
-    
-    def jsonate(self):
-        return json.dumps(self, default=lambda o: o.__dict__, indent = 4)
