@@ -12,29 +12,33 @@ class BaseKnowledge:
         for p in self.passages:
             p.noun_sort(self.passages)
         
-    def _passaginate(self, text, words_limit=412):
-        raw_passages = text.split("\n")
-        passages = []
+    def _passaginate(self, text, wcount_limit=412):
+        raw_psgs = text.split("\n")
+        new_psgs = []
         
-        for passage in raw_passages:
-            passage_words = nltk.word_tokenize(passage)
+        for psg in raw_psgs:
+            psg_wcount = len(nltk.word_tokenize(psg))
             
-            if words_limit <= len(passage_words):
-                p_builder = ""
-                p_length = 0
-                for sentence in nltk.sent_tokenize(passage):
-                    if words_limit <= p_length + len(sentence):
-                        p_builder += sentence
+            if psg_wcount > wcount_limit:
+                psg_tmp = ""
+                psg_tmp_wcount = 0
+                
+                for sent in nltk.sent_tokenize(psg):
+                    sent_wcount = len(nltk.word_tokenize(sent))
+                    if psg_tmp_wcount + sent_wcount <= wcount_limit:
+                        psg_tmp += sent
+                        psg_tmp_wcount += sent_wcount
                     else:
-                        passage.append(p_builder)
-                        p_length = 0
-                        p_builder = ""
-                if p_builder != "":
-                    passages.append(p_builder)
+                        new_psgs.append(psg_tmp)
+                        psg_tmp_wcount = 0
+                        psg_tmp = sent
+                        
+                if psg_tmp != "":
+                    new_psgs.append(psg_tmp)
             else:
-                if passage != "":
-                    passages.append(passage)
-        return passages
+                if psg != "":
+                    new_psgs.append(psg)
+        return new_psgs
         
     def attach_question(self):
         for passage in self.passages:
