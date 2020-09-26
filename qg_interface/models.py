@@ -8,37 +8,33 @@ from .qgcall import call_qg_interface
 class BaseKnowledge:
     
     def __init__(self, text):
-        self.passages = list(map(Passage, self._passaginate(text)))
+        self.passages = list(map(Passage, self.passginate(text)))
         for p in self.passages:
             p.noun_sort(self.passages)
         
-    def _passaginate(self, text, wcount_limit=412):
-        raw_psgs = text.split("\n")
-        new_psgs = []
+    def passginate(self, text, wc_limit=412):
+        psgs = []
+        raw_psgs = [p for p in text.split('\n') if p != '']
+        word_count = [1 + p.count(' ') for p in raw_psgs]
         
-        for psg in raw_psgs:
-            psg_wcount = len(nltk.word_tokenize(psg))
-            
-            if psg_wcount > wcount_limit:
-                psg_tmp = ""
-                psg_tmp_wcount = 0
-                
-                for sent in nltk.sent_tokenize(psg):
-                    sent_wcount = len(nltk.word_tokenize(sent))
-                    if psg_tmp_wcount + sent_wcount <= wcount_limit:
-                        psg_tmp += sent
-                        psg_tmp_wcount += sent_wcount
-                    else:
-                        new_psgs.append(psg_tmp)
-                        psg_tmp_wcount = 0
-                        psg_tmp = sent
-                        
-                if psg_tmp != "":
-                    new_psgs.append(psg_tmp)
+        for psg, wc in zip(raw_psgs, word_count):
+            if wc <= wc_limit:
+                psgs.append(psg)
             else:
-                if psg != "":
-                    new_psgs.append(psg)
-        return new_psgs
+                long_psg_toks = psg.split(' ')
+                self.passaginate_recur(long_psg_toks, wc_limit, psgs)
+        
+        return psgs
+                
+    def passaginate_recur(self, long_psg_toks, wc_limit, psgs):
+        wc = len(long_psg_toks)
+        if wc > wc_limit:
+            trimmed_psg_toks = long_psg_toks[0: wc_limit]
+            next_psg_toks = long_psg_toks[wc_limit: wc]
+            psgs.append(' '.join(trimmed_psg_toks))
+            self.passaginate_recur(next_psg_toks, wc_limit, psgs)
+        else:
+            psgs.append(' '.join(long_psg_toks))
         
     def attach_question(self):
         for passage in self.passages:
