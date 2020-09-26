@@ -23,15 +23,22 @@ class BaseKnowledge:
             else:
                 long_psg_toks = psg.split(' ')
                 self.passaginate_recur(long_psg_toks, wc_limit, psgs)
-        
         return psgs
                 
     def passaginate_recur(self, long_psg_toks, wc_limit, psgs):
         wc = len(long_psg_toks)
         if wc > wc_limit:
-            trimmed_psg_toks = long_psg_toks[0: wc_limit]
-            next_psg_toks = long_psg_toks[wc_limit: wc]
+
+            end_pos = wc_limit
+            for pos in range(wc_limit - 1, wc - wc_limit + 1):
+                if long_psg_toks[pos][-1] == '.':
+                    end_pos = pos + 1
+                    break
+                    
+            trimmed_psg_toks = long_psg_toks[0: end_pos]
             psgs.append(' '.join(trimmed_psg_toks))
+            
+            next_psg_toks = long_psg_toks[end_pos: wc]
             self.passaginate_recur(next_psg_toks, wc_limit, psgs)
         else:
             psgs.append(' '.join(long_psg_toks))
