@@ -30,7 +30,7 @@ class BaseKnowledge:
         if wc > wc_limit:
 
             end_pos = wc_limit
-            for pos in range(wc_limit - 1, wc - wc_limit + 1):
+            for pos in range(wc_limit - 1, wc):
                 if long_psg_toks[pos][-1] == '.':
                     end_pos = pos + 1
                     break
