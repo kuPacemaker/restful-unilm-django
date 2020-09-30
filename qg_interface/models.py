@@ -68,7 +68,7 @@ class Passage:
         
         tf = list(map(self.nouns.count, noun_set))
         idf = [sum(map(lambda p: noun in p.nouns, passages)) for noun in noun_set]
-        tfidf = list(map(lambda i: tf[i]*math.log(len(passages)/idf[i]), range(0, len(noun_set))))
+        tfidf = list(map(lambda tf, idf: tf*math.log(len(passages)/idf), zip(tf, idf)))
 
         nouns_with_tfidf = zip(noun_set, tfidf)
         sorted_nouns = sorted(nouns_with_tfidf, key=lambda item: item[1], reverse=True)
