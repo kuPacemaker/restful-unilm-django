@@ -71,7 +71,7 @@ class Passage:
     def noun_tfidf(self, passages):
         noun_set = set(self.dup_nouns)
         tf = [self.dup_nouns.count(noun) for noun in noun_set]
-        idf = [sum([noun in p.nouns for p in passages]) for noun in noun_set]
+        idf = [sum([noun in p.dup_nouns for p in passages]) for noun in noun_set]
         tfidf = [tf*math.log(len(passages)/idf) for tf, idf in zip(tf, idf)]
         
         return zip(noun_set, tfidf)
