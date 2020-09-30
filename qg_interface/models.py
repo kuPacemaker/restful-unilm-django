@@ -65,15 +65,15 @@ class Passage:
     
     def noun_sort(self, passages):
         noun_set = set(self.nouns)
-        
-        tf = list(map(self.nouns.count, noun_set))
+
+        tf = [self.nouns.count(noun) for noun in noun_set]
         idf = [sum([noun in p.nouns for p in passages]) for noun in noun_set]
         tfidf = [tf*math.log(len(passages)/idf) for tf, idf in zip(tf, idf)]
 
         nouns_with_tfidf = zip(noun_set, tfidf)
         sorted_nouns = sorted(nouns_with_tfidf, key=lambda item: item[1], reverse=True)
-        self.nouns = list(map(lambda item: item[0], sorted_nouns))
-        
+        self.nouns = [item[0] for item in sorted_nouns]       
+
         #print(self.nouns)
     
     def attach_question(self):
