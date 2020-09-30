@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from qg_interface.models import BaseKnowledge
 
 # Create your views here.
-@api_view(['POST', 'GET'])
+@api_view(['GET', 'POST'])
 def question_generation(request):
-    if request.method == 'POST' || request.method == 'GET':
+    if request.method == 'POST' or request.method == 'GET':
         text = request.data
         bkd = BaseKnowledge(text)
         bkd.attach_question()
