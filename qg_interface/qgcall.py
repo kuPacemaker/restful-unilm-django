@@ -5,7 +5,7 @@ PORT = 2593
 
 def call_qg_interface(qa):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.settimeout(10.0)
+    client_socket.settimeout(15.0)
     client_socket.connect((HOST, PORT))
     client_socket.sendall(qa.encode())
     
