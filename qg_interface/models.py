@@ -54,7 +54,8 @@ class Passage:
     
     def __init__(self, text):
         self.text = text
-        self.nouns = self._noun_extract(text)
+        self.dup_nouns = self._noun_extract(text)
+        self.nouns = None
         self.aqset = list()
         
     def _noun_extract(self, text):
@@ -64,17 +65,16 @@ class Passage:
         return nouns + noun_phrases
     
     def noun_sort(self, passages):
-        noun_set = set(self.nouns)
-
-        tf = [self.nouns.count(noun) for noun in noun_set]
-        idf = [sum([noun in p.nouns for p in passages]) for noun in noun_set]
-        tfidf = [tf*math.log(len(passages)/idf) for tf, idf in zip(tf, idf)]
-
-        nouns_with_tfidf = zip(noun_set, tfidf)
-        sorted_nouns = sorted(nouns_with_tfidf, key=lambda item: item[1], reverse=True)
+        sorted_nouns = sorted(self.noun_tfidf(passages), key=lambda item: item[1], reverse=True)
         self.nouns = [item[0] for item in sorted_nouns]       
 
-        #print(self.nouns)
+    def noun_tfidf(self, passages):
+        noun_set = set(self.dup_nouns)
+        tf = [self.dup_nouns.count(noun) for noun in noun_set]
+        idf = [sum([noun in p.nouns for p in passages]) for noun in noun_set]
+        tfidf = [tf*math.log(len(passages)/idf) for tf, idf in zip(tf, idf)]
+        
+        return zip(noun_set, tfidf)
     
     def attach_question(self):
         request, answers = self.qg_query_formatted(6)
