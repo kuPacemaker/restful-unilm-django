@@ -54,8 +54,7 @@ class Passage:
     
     def __init__(self, text):
         self.text = text
-        self.dup_nouns = self._noun_extract(text)
-        self.nouns = None
+        self.nouns = self._noun_extract(text)
         self.aqset = list()
         
     def _noun_extract(self, text):
@@ -69,9 +68,9 @@ class Passage:
         self.nouns = [item[0] for item in sorted_nouns]       
 
     def noun_tfidf(self, passages):
-        noun_set = set(self.dup_nouns)
-        tf = [self.dup_nouns.count(noun) for noun in noun_set]
-        idf = [sum([noun in p.dup_nouns for p in passages]) for noun in noun_set]
+        noun_set = set(self.nouns)
+        tf = [self.nouns.count(noun) for noun in noun_set]
+        idf = [sum([noun in p.nouns for p in passages]) for noun in noun_set]
         tfidf = [tf*math.log(len(passages)/idf) for tf, idf in zip(tf, idf)]
         
         return zip(noun_set, tfidf)
