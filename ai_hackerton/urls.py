@@ -14,9 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, register_converter
 from . import views
 
+class NineDigitConverter:
+    regex = '[0-9]{9}'
+    def to_python(self, value):
+        return int(value)
+
+    def to_url(self, value):
+        return '%09d' % value
+
+register_converter(NineDigitConverter, 'stdid')
+
 urlpatterns = [
-    path('qg', views.question_generation, name='qg'),
+    path('teammate/', views.stdid_error, name='stdid_error'),
+    path('teammate/<stdid:std_id>', views.apply_teammate, name='apply_teammate'),
+    path('teammate/<int:std_id>', views.stdid_value_error, name='stdid_value_error'),
 ]
