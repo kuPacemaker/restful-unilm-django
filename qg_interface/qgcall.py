@@ -1,6 +1,6 @@
 import socket
 
-HOST = '117.16.136.170'
+HOST = '117.16.136.171'
 PORT = 2593
 
 def call_qg_interface(qa):
