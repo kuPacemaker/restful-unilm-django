@@ -86,7 +86,8 @@ class Passage:
     def qg_query_formatted(self, limit=5):
         answer_limit = min(limit, len(self.nouns))
         answer_send = [answer for num, answer in enumerate(self.nouns) if num < answer_limit]
-        return "".join([self._seperated(self.text, answer) for answer in answer_send]), answer_send
+        paset = "".join([self._seperated(self.text, answer) for answer in answer_send])
+        return paset + '*', answer_send
     
     def _seperated(self, msg1, msg2):
         return "{} [SEP] {}\n".format(msg1, msg2)
