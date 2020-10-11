@@ -2,7 +2,8 @@ from django.db import models
 from textblob import TextBlob
 import time, math, json
 import nltk
-from .qgcall import call_qg_interface
+from remote_api.qgcall import call_qg_interface
+from remote_api.qacall import call_qa_interface
 
 # Create your models here.
 class BaseKnowledge:
@@ -46,7 +47,10 @@ class BaseKnowledge:
     def attach_question(self):
         for passage in self.passages:
             print(passage.attach_question())
-            
+
+    def replace_question(self): #with qa result
+        for passage in self.passages:
+            print(passage.replace_question())    
     def jsonate(self):
         return json.loads(json.dumps(self, default=lambda o: o.__dict__, indent = 4))
         
@@ -76,14 +80,14 @@ class Passage:
         return zip(noun_set, tfidf)
     
     def attach_question(self):
-        request, answers = self.qg_query_formatted(6)
+        request, answers = self.query_formatted(6)
         questions = call_qg_interface(request)
         print(questions)
         
         self.aqset = list(zip(answers, questions))
         return True
     
-    def qg_query_formatted(self, limit=5):
+    def query_formatted(self, limit=5):
         answer_limit = min(limit, len(self.nouns))
         answer_send = [answer for num, answer in enumerate(self.nouns) if num < answer_limit]
         paset = "".join([self._seperated(self.text, answer) for answer in answer_send])
@@ -91,6 +95,9 @@ class Passage:
     
     def _seperated(self, msg1, msg2):
         return "{} [SEP] {}\n".format(msg1, msg2)
+
+    def replace_question(self): #with qa result
+        pass
     
     def jsonate(self):
         return json.dumps(self, default=lambda o: o.__dict__, indent = 4)
