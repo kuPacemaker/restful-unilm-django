@@ -96,7 +96,7 @@ class Passage:
     def replace_question(self): #with qa result
         assert(len(self.aqset) > 0)
 
-        request, questions = qa_query_formatted(self.request_limit)
+        request, questions = self.qa_query_formatted(self.request_limit)
         answers = remote.api.call(request, 'qa')
         print(answers)
 
