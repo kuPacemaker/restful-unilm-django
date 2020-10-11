@@ -18,6 +18,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('qa', views.answer_generation, name='qa'),
-    path('qa/fun', views.answer_generation_for_generated_question, name='qa_for_gq')
+    path('', views.answer_generation, name='qa'),
+    path('/fun', views.answer_generation_for_generated_question, name='qa_for_gq')
 ]
