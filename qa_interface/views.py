@@ -7,9 +7,7 @@ from qg_interface.models import BaseKnowledge
 @api_view(['POST'])
 def answer_generation(request):
     if request.method == 'POST':
-        bkd = request.data['bkd']
-        q = request.data['q']
-        return Response(bkd.jsonate())
+        return Response({"message": "This function is not implemented yet."})
     return Response({"message": "The GET method is not appropriate."})
 
 @api_view(['POST'])

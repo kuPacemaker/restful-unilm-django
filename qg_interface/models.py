@@ -2,8 +2,7 @@ from django.db import models
 from textblob import TextBlob
 import time, math, json
 import nltk
-from remote_api.qgcall import call_qg_interface
-from remote_api.qacall import call_qa_interface
+import remote.api
 
 # Create your models here.
 class BaseKnowledge:
@@ -82,7 +81,7 @@ class Passage:
     
     def attach_question(self):
         request, answers = self.qg_query_formatted(self.request_limit)
-        questions = call_qg_interface(request)
+        questions = remote.api.call(request, 'qg')
         print(questions)
         
         self.aqset = list(zip(answers, questions))
@@ -98,7 +97,7 @@ class Passage:
         assert(len(self.aqset) > 0)
 
         request, questions = qa_query_formatted(self.request_limit)
-        answers = call_qa_interface(request)
+        answers = remote.api.call(request, 'qa')
         print(answers)
 
         self.aqset = list(zip(answers, questions))
