@@ -60,6 +60,7 @@ class Passage:
         self.text = text
         self.nouns = self._noun_extract(text)
         self.aqset = list()
+        self.request_limit = 6
         
     def _noun_extract(self, text):
         tokenized = nltk.word_tokenize(text)
@@ -80,24 +81,37 @@ class Passage:
         return zip(noun_set, tfidf)
     
     def attach_question(self):
-        request, answers = self.query_formatted(6)
+        request, answers = self.qg_query_formatted(self.request_limit)
         questions = call_qg_interface(request)
         print(questions)
         
         self.aqset = list(zip(answers, questions))
         return True
     
-    def query_formatted(self, limit=5):
+    def qg_query_formatted(self, limit=5):
         answer_limit = min(limit, len(self.nouns))
         answer_send = [answer for num, answer in enumerate(self.nouns) if num < answer_limit]
         paset = "".join([self._seperated(self.text, answer) for answer in answer_send])
         return paset + '*', answer_send
+
+    def replace_question(self): #with qa result
+        assert(len(self.aqset) > 0)
+
+        request, questions = qa_query_formatted(self.request_limit)
+        answers = call_qa_interface(request)
+        print(answers)
+
+        self.aqset = list(zip(answers, questions))
+        return True
     
+    def qa_query_formatted(self, limit=5):
+        question_limit = min(limit, len(self.nouns))
+        question_send = [question for num, (answer, question) in enumerate(self.aqset) if num < question_limit]
+        pqset = "".join([self._seperated(self.text, question) for question in question_send])
+        return pqset + '*', question_send
+
     def _seperated(self, msg1, msg2):
         return "{} [SEP] {}\n".format(msg1, msg2)
 
-    def replace_question(self): #with qa result
-        pass
-    
     def jsonate(self):
         return json.dumps(self, default=lambda o: o.__dict__, indent = 4)
