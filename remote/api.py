@@ -1,4 +1,4 @@
-from remote.api.interface import nodes
+from remote.interface import nodes
 
 def call(query, service):
     HOST, PORT = nodes[service]
