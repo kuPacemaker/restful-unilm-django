@@ -51,9 +51,9 @@ class BaseKnowledge:
         for passage in self.passages:
             print(passage.replace_question())
 
-    def attach_answer(self):
+    def attach_answer(self, q):
         for passage in self.passages:
-            print(passage.attach_answer())
+            print(passage.attach_answer(q))
 
     def jsonate(self):
         return json.loads(json.dumps(self, default=lambda o: o.__dict__, indent = 4))
