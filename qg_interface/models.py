@@ -43,13 +43,18 @@ class BaseKnowledge:
         else:
             psgs.append(' '.join(long_psg_toks))
         
-    def attach_question(self):
+    def attach_question(self, q):
         for passage in self.passages:
-            print(passage.attach_question())
+            print(passage.attach_question(q))
 
     def replace_question(self): #with qa result
         for passage in self.passages:
-            print(passage.replace_question())    
+            print(passage.replace_question())
+
+    def attach_answer(self):
+        for passage in self.passages:
+            print(passage.attach_answer())
+
     def jsonate(self):
         return json.loads(json.dumps(self, default=lambda o: o.__dict__, indent = 4))
         
@@ -102,6 +107,10 @@ class Passage:
 
         self.aqset = list(zip(answers, questions))
         return True
+
+    def attach_question(self, q):
+        request, questions = self.qa_query_formatted(self.request_limit)
+        answers = remote.api.call(request, 'qa')
     
     def qa_query_formatted(self, limit=5):
         question_limit = min(limit, len(self.nouns))
