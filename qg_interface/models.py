@@ -101,21 +101,27 @@ class Passage:
     def replace_question(self): #with qa result
         assert(len(self.aqset) > 0)
 
-        request, questions = self.qa_query_formatted(self.request_limit)
+        request, questions = self.qa_query_formatted(limit=self.request_limit)
         answers = remote.api.call(request, 'qa')
-        print(answers)
 
         self.aqset = list(zip(answers, questions))
         return True
 
-    def attach_question(self, q):
-        request, questions = self.qa_query_formatted(self.request_limit)
+    def attach_answer(self, q):
+        request, questions = self.qa_query_formatted(q=q)
         answers = remote.api.call(request, 'qa')
+        
+        self.aqset = list(zip(answers, questions))
+        return True
     
-    def qa_query_formatted(self, limit=5):
-        question_limit = min(limit, len(self.nouns))
-        question_send = [question for num, (answer, question) in enumerate(self.aqset) if num < question_limit]
-        pqset = "".join([self._seperated(self.text, question) for question in question_send])
+    def qa_query_formatted(self, limit=5, q=None):
+        if q is None:
+            question_limit = min(limit, len(self.nouns))
+            question_send = [question for num, (answer, question) in enumerate(self.aqset) if num < question_limit]
+            pqset = "".join([self._seperated(self.text, question) for question in question_send])
+        else:
+            pqset = self._seperated(self.text, q)
+            question_send = [q]
         return pqset + '*', question_send
 
     def _seperated(self, msg1, msg2):
