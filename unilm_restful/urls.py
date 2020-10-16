@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('restful/', include('qg_interface.urls')),
+    path('restful/qg', include('qg_interface.urls')),
+    path('restful/qa', include('qa_interface.urls')),
     path('hackerton/', include('ai_hackerton.urls')),
 ]

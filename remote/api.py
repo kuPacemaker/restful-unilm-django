@@ -1,3 +1,4 @@
+import socket
 from remote.interface import nodes
 
 def call(query, service):

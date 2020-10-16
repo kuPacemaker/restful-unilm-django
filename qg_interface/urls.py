@@ -18,5 +18,5 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('qg', views.question_generation, name='qg'),
+    path('', views.question_generation, name='qg'),
 ]
