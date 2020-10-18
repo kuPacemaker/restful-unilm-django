@@ -43,9 +43,9 @@ class BaseKnowledge:
         else:
             psgs.append(' '.join(long_psg_toks))
         
-    def attach_question(self, q):
+    def attach_question(self):
         for passage in self.passages:
-            print(passage.attach_question(q))
+            print(passage.attach_question())
 
     def replace_question(self): #with qa result
         for passage in self.passages:
