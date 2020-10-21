@@ -1,14 +1,14 @@
 import socket
-from remote.interface import nodes
 
-def call(query, service):
-    HOST, PORT = nodes[service]
+def call(protocol):
+    HOST, PORT = protocol.__node__
+    QUERY = protocol.gen_query().encode()
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.settimeout(15.0)
     client_socket.connect((HOST, PORT))
+    client_socket.sendall(QUERY)
 
-    client_socket.sendall(query.encode())
     recv = client_socket.recv(4096).decode('utf-8')
     client_socket.close()
     
