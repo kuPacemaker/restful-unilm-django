@@ -4,13 +4,20 @@ from collections import Counter
 
 def noun_extract(text):
     tokenized = nltk.word_tokenize(text)
-    nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if pos[:2]=='NN']
-    noun_phrases = TextBlob(text).noun_phrases
-    return list(set(nouns + noun_phrases))
+    nouns = [noun_trim(word) for (word, pos) in nltk.pos_tag(tokenized) if pos[:2]=='NN']
+    noun_phrases = [noun_trim(phrase) for phrase in TextBlob(text).noun_phrases]
+    result = set(nouns + noun_phrases)
+    if '' in result:
+        result.remove('')
+    return list(result)
+
+def noun_trim(noun):
+    return noun.strip("\'“”. ")
 
 class Passage:
 
     def __init__(self, text):
+        self.text = text
         self.nouns = noun_extract(text)
     
     def noun_sort(self, metric, inplace=True, reverse=True):
@@ -41,14 +48,14 @@ class TfIdf:
 
 def passaginate(text, max_words=412, noun_sorting=False):
     psgs = psg_split(text, max_words)
-    obj_psgs = list(map(Passage, psgs))
+    passages = list(map(Passage, psgs))
 
     if noun_sorting:
-        tfidf = TfIdf(obj_psgs)
-        for psg in psgs:
-            psg.noun_sort(tfidf, inplace=True, reverse=True)
+        tfidf = TfIdf(passages)
+        for passage in passages:
+            passage.noun_sort(tfidf, inplace=True, reverse=True)
     
-    return obj_psgs
+    return passages
 
 def psg_split(text, max_words):
     psgs = [p for p in text.split('\n') if p != '']
