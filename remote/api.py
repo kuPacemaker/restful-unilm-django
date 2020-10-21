@@ -1,7 +1,7 @@
 import socket
 
 def call(protocol):
-    HOST, PORT = protocol.__node__
+    HOST, PORT = protocol.node
     QUERY = protocol.gen_query().encode()
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
