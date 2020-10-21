@@ -12,4 +12,4 @@ class AbstractProtocol(metaclass=ABCMeta):
         pass
 
     def sep(self, str1, str2):
-        return "%s [SEP] %s\n" % str1, str2
+        return "%s [SEP] %s\n" % (str1, str2)
