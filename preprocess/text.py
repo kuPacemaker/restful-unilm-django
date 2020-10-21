@@ -4,12 +4,15 @@ from collections import Counter
 
 def noun_extract(text):
     tokenized = nltk.word_tokenize(text)
-    nouns = [noun_trim(word) for (word, pos) in nltk.pos_tag(tokenized) if pos[:2]=='NN']
-    noun_phrases = [noun_trim(phrase) for phrase in TextBlob(text).noun_phrases]
-    result = set(nouns + noun_phrases)
-    if '' in result:
-        result.remove('')
-    return list(result)
+    nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if pos[:2]=='NN']
+    noun_phrases = [phrase for phrase in TextBlob(text).noun_phrases]
+    result = []
+    
+    for noun in nouns+noun_phrases:
+        trimmed_noun = noun_trim(noun)
+        if trimmed_noun != '':
+            result.append(trimmed_noun)
+    return result
 
 def noun_trim(noun):
     return noun.strip("\'“”. ")
@@ -19,13 +22,14 @@ class Passage:
     def __init__(self, text):
         self.text = text
         self.nouns = noun_extract(text)
+        self.nounset = set(self.nouns)
     
     def noun_sort(self, metric, inplace=True, reverse=True):
         score = metric.fit_transform(self)
-        noun_score = [(noun, score[noun]) for noun in self.nouns]
+        noun_score = [(noun, score[noun]) for noun in self.nounset]
         sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
-
+        print(sorted_noun_score)
         if inplace:
             self.nouns = sorted_nouns
             return None
