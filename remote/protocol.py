@@ -3,6 +3,7 @@ from abc import ABCMeta, abstractmethod
 class AbstractProtocol(metaclass=ABCMeta):
 
     TIMEOUT = 15.0
+    TERMINATOR = '*'
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'node'):
@@ -10,7 +11,7 @@ class AbstractProtocol(metaclass=ABCMeta):
         return object.__new__(cls)
 
     @abstractmethod
-    def gen_query(self):
+    def gen_query(self, *args, **kwagrs):
         pass
 
     def sep(self, str1, str2):
