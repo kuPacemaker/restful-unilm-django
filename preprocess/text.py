@@ -22,14 +22,13 @@ class Passage:
     def __init__(self, text):
         self.text = text
         self.nouns = noun_extract(text)
-        self.nounset = set(self.nouns)
     
     def noun_sort(self, metric, inplace=True, reverse=True):
         score = metric.fit_transform(self)
-        noun_score = [(noun, score[noun]) for noun in self.nounset]
+        noun_score = [(noun, score[noun]) for noun in set(self.nounset)]
         sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
-        print(sorted_noun_score)
+
         if inplace:
             self.nouns = sorted_nouns
             return None
