@@ -22,7 +22,7 @@ class Passage:
     def noun_sort(self, metric, inplace=True, reverse=True):
         score = metric.fit_transform(self.nouns)
         noun_score = [(noun, score[noun]) for noun in set(self.nouns)]
-        sorted_noun_score = sorted(noun_score, key=lambda x: (x[1], len(x[0])), reverse=reverse)
+        sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
 
         if inplace:
