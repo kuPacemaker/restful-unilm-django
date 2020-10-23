@@ -1,13 +1,17 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from qg_interface.models import BaseKnowledge
+
+import remote.api as RemoteApi
+from base.models import BaseKnowledge
+from .protocol import QGProtocol
 
 # Create your views here.
 @api_view(['POST'])
 def question_generation(request):
     if request.method == 'POST':
         bkd = BaseKnowledge(request.data['bkd'])
-        bkd.attach_question()
+        protocol = QGProtocol(bkd, num_case=6)
+        RemoteApi.call(protocol)
         return Response(bkd.jsonate())
     return Response({"message": "The GET method is not appropriate."})
