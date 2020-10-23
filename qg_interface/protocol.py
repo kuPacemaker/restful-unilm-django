@@ -1,21 +1,24 @@
 from remote.protocol import AbstractProtocol
+from base.models import BaseKnowledge
 
 class QGProtocol(AbstractProtocol):
     node = ('117.16.136.171', 2593)
 
-    def __init__(self, bkd, num_case=6):
+    def __init__(self, bkd: BaseKnowledge, num_case=6):
         self.bkd = bkd
         self.num_case = num_case
         self.response_attach_head = 0
 
-    def gen_query(self, bkd, num_case=6):
+    def gen_query(self):
         for passage in self.bkd.passages:
             query = ""
             p = passage.text
-            self.answers = passage.nouns[:min(len(passage.nouns), num_case)]
+            self.answers = passage.nouns[:min(len(passage.nouns), self.num_case)]
+
             for a in self.answers:
                 query += self.sep(p, a)
-            yield query + self.TERMINATOR
+
+            yield (query + self.TERMINATOR)
 
     def notify_response(self, response):
         self.bkd.attach_aqset(self.response_attach_head, list(zip(self.answers, response)))

@@ -17,8 +17,10 @@ class QAProtocol():
                 if i != 0:
                     yield (query + self.TERMINATOR)
                 query = ""
+
             query += self.sep(p, self.question)
-        yield query + self.TERMINATOR
+
+        yield (query + self.TERMINATOR)
 
     def notify_response(self, response):
         for res in response:
