@@ -11,7 +11,6 @@ from .protocol import QGProtocol
 def question_generation(request):
     if request.method == 'POST':
         bkd = BaseKnowledge(request.data['bkd'])
-        protocol = QGProtocol(bkd, num_case=6)
-        RemoteApi.call(protocol)
+        RemoteApi.call(QGProtocol(bkd, num_case=6))
         return Response(bkd.jsonate())
     return Response({"message": "The GET method is not appropriate."})
