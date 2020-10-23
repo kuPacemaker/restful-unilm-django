@@ -4,7 +4,7 @@ import math
 class TfIdf:
     def __init__(self, word_lists):
         self.idf = dict()
-        self.num_docs = len(word_lists)
+        self.num_docs = min(len(word_lists), 2)
         for i, word_list in enumerate(word_lists):
             for noun in word_list:
                 self.idf[noun] = i+1
