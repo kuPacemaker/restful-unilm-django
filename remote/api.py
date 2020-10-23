@@ -5,7 +5,7 @@ def call(protocol):
     csock = setup_socket_connection(HOST, PORT, TIMEOUT)
 
     for each_query in QUERY:
-        csock.sendall(each_query)
+        csock.sendall(each_query.encode())
         res = csock.recv(4096).decode('utf-8')
         res = res.split('\n')
         protocol.notify_response(res)
