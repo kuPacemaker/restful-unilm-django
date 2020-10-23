@@ -11,8 +11,16 @@ class AbstractProtocol(metaclass=ABCMeta):
         return object.__new__(cls)
 
     @abstractmethod
-    def gen_query(self, *args, **kwagrs):
+    def gen_query(self):
         pass
 
-    def sep(self, str1, str2):
+    @abstractmethod
+    def notify_response(self, response):
+        pass
+
+    def parse(self):
+        return self.node[0], self.node[1], self.gen_query(), self.TIMEOUT
+
+    @classmethod
+    def sep(cls, str1, str2):
         return "%s [SEP] %s\n" % (str1, str2)

@@ -1,21 +1,19 @@
 import socket
 
 def call(protocol):
-    HOST, PORT, QUERY, TIMEOUT = parse_protocol(protocol)
-
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.settimeout(TIMEOUT)
-    client_socket.connect((HOST, PORT))
-    client_socket.sendall(QUERY)
-
-    recv = client_socket.recv(4096).decode('utf-8')
-    client_socket.close()
-    
-    response = recv.split('\n')
+    HOST, PORT, QUERY, TIMEOUT = protocol.parse()
+    csock = setup_socket_connection(HOST, PORT, timeout)
+    response = []
+    for each_query in QUERY:
+        csock.sendall(each_query)
+        res = csock.recv(4096).decode('utf-8')
+        response.append(res.split('\n'))
+    csock.close()
+    protocol.notify_response(response)
     return response
 
-def parse_protocol(protocol):
-    HOST, PORT = protocol.node
-    QUERY = protocol.gen_query().encode()
-    TIMEOUT = protocol.timeout
-    return HOST, PORT, QUERY, TIMEOUT
+def setup_socket_connection(host, port, timeout):
+    csock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    csock.settimeout(timeout)
+    csock.connect((host, port))
+    return csock

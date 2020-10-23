@@ -3,10 +3,23 @@ from remote.protocol import AbstractProtocol
 class QGProtocol(AbstractProtocol):
     node = ('117.16.136.171', 2593)
 
-    def gen_query(self, bkd, num_query=6):
-        for passage in bkd.passages:
-            query = ''
-            text = passage.text
-            for noun in passage.nouns[:num_query]:
-                query += sep(text, noun)
-        return query + self.TERMINATOR
+    def __init__(self, bkd, num_case=6):
+        self.bkd = bkd
+        self.num_case = num_case
+        self.response_attach_head = 0
+
+    def gen_query(self, bkd, num_case=6):
+        for passage in self.bkd.passages:
+            query = ""
+            p = passage.text
+            self.answers = passage.nouns[:min(len(passage.nouns), num_case)]
+            for a in self.answers:
+                query += self.sep(p, a)
+            yield query + self.TERMINATOR
+
+    def notify_response(self, response):
+        self.bkd.attach_aqset(self.response_attach_head, list(zip(self.answers, response)))
+        self.response_attach_head += 1
+
+    def protocol_reset(self):
+        self.response_attach_head = 0
