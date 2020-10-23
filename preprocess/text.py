@@ -87,6 +87,6 @@ def recursive_psg_split(psg_toks, max_words, result_psgs):
         result_psgs.append(' '.join(trimmed_psg_toks))
         
         next_psg_toks = psg_toks[end_pos: n_words]
-        passaginate_recur(next_psg_toks, max_words, result_psgs)
+        recursive_psg_split(next_psg_toks, max_words, result_psgs)
     else:
         result_psgs.append(' '.join(psg_toks))
