@@ -7,7 +7,7 @@ def passaginate(text, max_words=412, noun_sorting=False):
     passages = list(map(Passage, psgs))
 
     if noun_sorting:
-        tfidf = TfIdf([passage.nouns for passage in passages])
+        tfidf = TfIdfLen([passage.nouns for passage in passages])
         for passage in passages:
             passage.noun_sort(tfidf, inplace=True, reverse=True)
     
