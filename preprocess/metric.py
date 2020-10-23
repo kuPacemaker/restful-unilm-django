@@ -1,5 +1,6 @@
 class TfIdf:
-
+    from collections import Counter
+    
     def __init__(self, word_lists):
         self.idf = dict()
         self.num_docs = len(word_lists)
