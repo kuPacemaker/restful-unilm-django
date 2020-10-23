@@ -2,20 +2,30 @@ import nltk
 import math
 from collections import Counter
 
-def noun_extract(text):
-    tokenized = nltk.word_tokenize(text)
-    nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if pos[:2]=='NN']
-    noun_phrases = [phrase for phrase in TextBlob(text).noun_phrases]
-    result = []
-    
-    for noun in nouns+noun_phrases:
-        trimmed_noun = noun_trim(noun)
-        if trimmed_noun != '':
-            result.append(trimmed_noun)
-    return result
+def passaginate(text, max_words=412, noun_sorting=False):
+    psgs = psg_split(text, max_words)
+    passages = list(map(Passage, psgs))
 
-def noun_trim(noun):
-    return noun.strip("\'“”. ")
+    if noun_sorting:
+        tfidf = TfIdf(passages)
+        for passage in passages:
+            passage.noun_sort(tfidf, inplace=True, reverse=True)
+    
+    return passages
+
+class TfIdf:
+
+    def __init__(self, passages):
+        self.idf = dict()
+        self.num_docs = len(passages)
+        for i, passage in enumerate(passages):
+            for noun in passage.nouns:
+                self.idf[noun] = i+1
+    
+    def fit_transform(self, passage):
+        tf = Counter(passage.nouns)
+        tfidf = {noun: tf_score * math.log(self.num_docs / self.idf[noun]) for noun, tf_score in tf.items()}
+        return tfidf
 
 class Passage:
 
@@ -35,30 +45,20 @@ class Passage:
 
         return sorted_nouns
 
-class TfIdf:
-
-    def __init__(self, passages):
-        self.idf = dict()
-        self.num_docs = len(passages)
-        for i, passage in enumerate(passages):
-            for noun in passage.nouns:
-                self.idf[noun] = i+1
+def noun_extract(text):
+    tokenized = nltk.word_tokenize(text)
+    nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if pos[:2]=='NN']
+    noun_phrases = [phrase for phrase in TextBlob(text).noun_phrases]
+    result = []
     
-    def fit_transform(self, passage):
-        tf = Counter(passage.nouns)
-        tfidf = {noun: tf_score * math.log(self.num_docs / self.idf[noun]) for noun, tf_score in tf.items()}
-        return tfidf
+    for noun in nouns+noun_phrases:
+        trimmed_noun = noun_trim(noun)
+        if trimmed_noun != '':
+            result.append(trimmed_noun)
+    return result
 
-def passaginate(text, max_words=412, noun_sorting=False):
-    psgs = psg_split(text, max_words)
-    passages = list(map(Passage, psgs))
-
-    if noun_sorting:
-        tfidf = TfIdf(passages)
-        for passage in passages:
-            passage.noun_sort(tfidf, inplace=True, reverse=True)
-    
-    return passages
+def noun_trim(noun):
+    return noun.strip("\'“”. ")
 
 def psg_split(text, max_words):
     psgs = [p for p in text.split('\n') if p != '']
