@@ -1,4 +1,5 @@
 from collections import Counter
+import math
 
 class TfIdf:
     def __init__(self, word_lists):

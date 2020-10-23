@@ -1,5 +1,4 @@
 import nltk
-import math
 from textblob import TextBlob
 from .metric import TfIdf
 
