@@ -2,7 +2,7 @@ import socket
 
 def call(protocol):
     HOST, PORT, QUERY, TIMEOUT = protocol.parse()
-    csock = setup_socket_connection(HOST, PORT, timeout)
+    csock = setup_socket_connection(HOST, PORT, TIMEOUT)
 
     for each_query in QUERY:
         csock.sendall(each_query)
