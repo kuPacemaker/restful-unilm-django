@@ -7,7 +7,7 @@ class BaseKnowledge:
     
     def __init__(self, text):
         self.passages = passaginate(text, noun_sorting=True)
-        self.nouns = reduce(lambda x, y: x | y, 
+        self.nouns = reduce(lambda x, y: set(x) | set(y), 
                             [p.nouns for p in self.passages])
 
     def all_text(self):
