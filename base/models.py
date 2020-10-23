@@ -1,4 +1,5 @@
 from preprocess.text import passaginate
+import json
 
 # Create your models here.
 class BaseKnowledge:

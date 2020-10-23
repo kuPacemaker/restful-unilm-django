@@ -1,9 +1,8 @@
 from remote.protocol import AbstractProtocol
 from base.models import BaseKnowledge
 
-class QAProtocol():
+class QAProtocol(AbstractProtocol):
     node = ('117.16.136.170', 3421)
-    TERMINATOR = '*'
 
     def __init__(self, bkd: BaseKnowledge, num_case=16, question=None):
         self.bkd = bkd

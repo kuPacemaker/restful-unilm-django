@@ -1,5 +1,6 @@
 import nltk
 import math
+from textblob import TextBlob
 from collections import Counter
 from .metric import TfIdf
 
@@ -21,8 +22,13 @@ class Passage:
         self.nouns = noun_extract(text)
     
     def noun_sort(self, metric, inplace=True, reverse=True):
+<<<<<<< HEAD
         score = metric.fit_transform(self.nouns)
         noun_score = [(noun, score[noun]) for noun in set(self.nounset)]
+=======
+        score = metric.fit_transform(self)
+        noun_score = [(noun, score[noun]) for noun in set(self.nouns)]
+>>>>>>> 1d147504cddefbe7b5e8026c13ad900835b42b25
         sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
 
@@ -73,6 +79,6 @@ def recursive_psg_split(psg_toks, max_words, result_psgs):
         result_psgs.append(' '.join(trimmed_psg_toks))
         
         next_psg_toks = psg_toks[end_pos: n_words]
-        passaginate_recur(next_psg_toks, max_words, result_psgs)
+        recursive_psg_split(next_psg_toks, max_words, result_psgs)
     else:
         result_psgs.append(' '.join(psg_toks))
