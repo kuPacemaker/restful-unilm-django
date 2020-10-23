@@ -1,31 +1,18 @@
 import nltk
 import math
 from collections import Counter
+from .metric import TfIdf
 
 def passaginate(text, max_words=412, noun_sorting=False):
     psgs = psg_split(text, max_words)
     passages = list(map(Passage, psgs))
 
     if noun_sorting:
-        tfidf = TfIdf(passages)
+        tfidf = TfIdf([passage.nouns for passage in passages])
         for passage in passages:
             passage.noun_sort(tfidf, inplace=True, reverse=True)
     
     return passages
-
-class TfIdf:
-
-    def __init__(self, passages):
-        self.idf = dict()
-        self.num_docs = len(passages)
-        for i, passage in enumerate(passages):
-            for noun in passage.nouns:
-                self.idf[noun] = i+1
-    
-    def fit_transform(self, passage):
-        tf = Counter(passage.nouns)
-        tfidf = {noun: tf_score * math.log(self.num_docs / self.idf[noun]) for noun, tf_score in tf.items()}
-        return tfidf
 
 class Passage:
 
@@ -34,7 +21,7 @@ class Passage:
         self.nouns = noun_extract(text)
     
     def noun_sort(self, metric, inplace=True, reverse=True):
-        score = metric.fit_transform(self)
+        score = metric.fit_transform(self.nouns)
         noun_score = [(noun, score[noun]) for noun in set(self.nounset)]
         sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
