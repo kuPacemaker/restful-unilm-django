@@ -1,5 +1,6 @@
 import nltk
 import math
+import TextBlob
 from collections import Counter
 
 def passaginate(text, max_words=412, noun_sorting=False):
