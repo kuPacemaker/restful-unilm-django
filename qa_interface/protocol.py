@@ -42,7 +42,7 @@ class GQQAProtocol(AbstractProtocol):
             text = passage.text
             aqset = passage.aqset
             query = ''
-            self.questions = list(map(lambda x: x[0], aqset))
+            self.questions = list(map(lambda x: x[1], aqset))
             for answer, question in aqset:
                 query += self.sep(text, question)
             yield (query + self.TERMINATOR)
