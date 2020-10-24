@@ -7,6 +7,7 @@ class QGProtocol(AbstractProtocol):
     def __init__(self, bkd: BaseKnowledge, num_case=6):
         self.bkd = bkd
         self.num_case = num_case
+        self.answers = None
         self.response_attach_head = 0
 
     def gen_query(self):
