@@ -4,7 +4,8 @@ from rest_framework.response import Response
 
 import remote.api as RemoteApi
 from base.models import BaseKnowledge
-from .protocol import QAProtocol
+from qa_interface.protocol import QAProtocol, GQQAProtocol
+from qg_interface.protocol import QGProtocol
 
 # Create your views here.
 @api_view(['POST'])
@@ -20,7 +21,7 @@ def answer_generation(request):
 def answer_generation_for_generated_question(request):
     if request.method == 'POST':
         bkd = BaseKnowledge(request.data['bkd'])
-        bkd.attach_question()
-        bkd.replace_question()
+        RemoteApi.call(QGProtocol(bkd))
+        RemoteApi.call(GQQAProtocol(bkd))
         return Response(bkd.jsonate())
     return Response({"message": "The GET method is not appropriate."})
