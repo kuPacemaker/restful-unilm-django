@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.core.cache import cache
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -10,8 +9,8 @@ from qg_interface.protocol import QGProtocol
 from .protocol import GQQAProtocol
 from .statistic import GQQAHistory
 
+history = GQQAHistory('history.csv')
 # Create your views here.
-history = GQQAHistory()
 @api_view(['POST'])
 def answer_generation_for_generated_question(request):
     if request.method == 'POST':
@@ -19,14 +18,9 @@ def answer_generation_for_generated_question(request):
 
         RemoteApi.call(QGProtocol(bkd))
         history.add_qg_result(bkd)
+
         RemoteApi.call(GQQAProtocol(bkd))
         history.add_qa_result(bkd)
-
-        if 'history-html' in cache:
-            cache.set('history-html', cache.get('history-html') + history.to_html())
-        else:
-            cache.set('history-html', history.to_html())
-        history.clear()
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 gqqa = answer_generation_for_generated_question
@@ -34,12 +28,10 @@ gqqa = answer_generation_for_generated_question
 @api_view(['GET', 'DELETE'])
 def gqqa_request_history(request):
     if request.method == 'DELETE':
-        cache.delete('history-html')
+        history.clear()
     elif request.method == 'GET':
-        if 'history-html' in cache:
-            return HttpResponse(with_style(cache.get('history-html')))
-        else:
-            return HttpResponse(with_style(history.to_html()))
+        history.save_csv()
+        return HttpResponse(with_style(history.to_html()))
     return Response({"message": "The %s method is not appropriate." % request.method})
 
 def with_style(html):
