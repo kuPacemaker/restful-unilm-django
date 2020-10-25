@@ -5,7 +5,6 @@ from rest_framework.response import Response
 import remote.api as RemoteApi
 from base import BaseKnowledge
 from qa_interface.protocol import QAProtocol
-from qg_interface.protocol import QGProtocol
 
 # Create your views here.
 @api_view(['POST'])
