@@ -35,7 +35,10 @@ def gqqa_request_history(request):
     if request.method == 'DELETE':
         history.clear()
     elif request.method == 'GET':
-        return HttpResponse(with_style(cache.get('history-html')))
+        if 'history-html' in cache:
+            return HttpResponse(with_style(cache.get('history-html')))
+        else:
+            return HttpResponse(with_style(history.to_html()))
     return Response({"message": "The %s method is not appropriate." % request.method})
 
 def with_style(html):
