@@ -16,12 +16,16 @@ history = GQQAHistory()
 def answer_generation_for_generated_question(request):
     if request.method == 'POST':
         bkd = BaseKnowledge(request.data['bkd'])
+
         RemoteApi.call(QGProtocol(bkd))
         history.add_qg_result(bkd)
-
         RemoteApi.call(GQQAProtocol(bkd))
         history.add_qa_result(bkd)
-        cache.set('history-html', history.to_html())
+
+        if 'history-html' in cache:
+            cache.set('history-html', cache.get('history-html') + history.to_html())
+        else:
+            cache.set('history-html', history.to_html())
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 gqqa = answer_generation_for_generated_question
@@ -31,7 +35,7 @@ def gqqa_request_history(request):
     if request.method == 'DELETE':
         history.clear()
     elif request.method == 'GET':
-        return HttpResponse(with_style(cache.get('history-html')))
+        return HttpResponse(with_style(cache['history-html']))
     return Response({"message": "The %s method is not appropriate." % request.method})
 
 def with_style(html):
