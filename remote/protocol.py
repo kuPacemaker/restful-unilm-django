@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 class AbstractProtocol(metaclass=ABCMeta):
 
-    TIMEOUT = 15.0
+    TIMEOUT = 25.0
     TERMINATOR = '*'
 
     def __new__(cls, *args, **kwargs):
