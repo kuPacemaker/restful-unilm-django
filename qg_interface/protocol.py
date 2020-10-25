@@ -1,5 +1,5 @@
-from remote.protocol import AbstractProtocol
-from base.models import BaseKnowledge
+from remote import AbstractProtocol
+from base import BaseKnowledge
 
 class QGProtocol(AbstractProtocol):
     node = ('117.16.136.171', 2593)

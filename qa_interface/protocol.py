@@ -1,5 +1,5 @@
-from remote.protocol import AbstractProtocol
-from base.models import BaseKnowledge
+from remote import AbstractProtocol
+from base import BaseKnowledge
 
 class QAProtocol(AbstractProtocol):
     node = ('117.16.136.170', 3421)

@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 import remote.api as RemoteApi
-from base.models import BaseKnowledge
+from base import BaseKnowledge
 from qa_interface.protocol import QAProtocol, GQQAProtocol
 from qg_interface.protocol import QGProtocol
 
