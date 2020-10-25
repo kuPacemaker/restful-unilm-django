@@ -26,6 +26,7 @@ def answer_generation_for_generated_question(request):
             cache.set('history-html', cache.get('history-html') + history.to_html())
         else:
             cache.set('history-html', history.to_html())
+        history.clear()
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 gqqa = answer_generation_for_generated_question
@@ -33,7 +34,7 @@ gqqa = answer_generation_for_generated_question
 @api_view(['GET', 'DELETE'])
 def gqqa_request_history(request):
     if request.method == 'DELETE':
-        history.clear()
+        cache.delete('history-html')
     elif request.method == 'GET':
         if 'history-html' in cache:
             return HttpResponse(with_style(cache.get('history-html')))
