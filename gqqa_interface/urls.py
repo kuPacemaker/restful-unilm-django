@@ -19,5 +19,5 @@ from . import views
 
 urlpatterns = [
     path('', views.gqqa, name='gqqa'),
-    path('/history', views.gqqa_history, name='gqqa_history')
+    path('history/', views.gqqa_history, name='gqqa_history')
 ]
