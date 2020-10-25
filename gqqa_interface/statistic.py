@@ -10,7 +10,7 @@ class GQQAHistory:
         if not os.path.exists(file):
             self.df = pandas.DataFrame(self.row)
         else:
-            self.df = pandas.read_csv(file)
+            self.df = pandas.read_csv(file, index_col=[0])
 
     def _init_data(self):
         return {
