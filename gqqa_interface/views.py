@@ -25,8 +25,8 @@ gqqa = answer_generation_for_generated_question
 @api_view(['GET', 'DELETE'])
 def gqqa_request_history(request):
     if request.method == 'DELETE':
-        statistic.clear()
+        history.clear()
     elif request.method == 'GET':
-        return HttpResponse(statistic.to_html())
+        return HttpResponse(history.to_html())
     return Response({"message": "The %s method is not appropriate." % request.method})
 gqqa_history = gqqa_request_history
