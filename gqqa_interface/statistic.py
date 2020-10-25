@@ -17,6 +17,7 @@ class GQQAHistory:
 
     def add_qa_result(self, bkd: BaseKnowledge):
         for passage in bkd.passages:
+            print(len(passage.aqset))
             for answer, _ in passage.aqset:
                 self.history['Generated Answer'].append(answer)
 
