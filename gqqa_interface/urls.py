@@ -15,10 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('restful/qg', include('qg_interface.urls')),
-    path('restful/qa', include('qa_interface.urls')),
-    path('restful/gqqa', include('gqqa_interface.urls')),
+    path('', views.answer_generation_for_generated_question, name='qa_for_gq')
 ]
