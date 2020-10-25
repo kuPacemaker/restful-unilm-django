@@ -31,4 +31,4 @@ class GQQAHistory:
         return pandas.DataFrame(self.history)
 
     def to_html(self):
-        return self.to_dataframe().df.to_html()
+        return self.to_dataframe().to_html()
