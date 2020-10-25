@@ -23,7 +23,7 @@ class GQQAHistory:
             print(len(passage.aqset))
             for answer, _ in passage.aqset:
                 self.row['Generated Answer'].append(answer)
-        self.df = pandas.concat([self.df, self.row])
+        self.df = pandas.concat([self.df, pandas.DataFrame(self.row)])
 
     def add_qg_result(self, bkd: BaseKnowledge):
         for passage in bkd.passages:
