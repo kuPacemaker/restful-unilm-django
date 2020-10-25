@@ -19,5 +19,4 @@ from . import views
 
 urlpatterns = [
     path('', views.answer_generation, name='qa'),
-    path('/fun', views.answer_generation_for_generated_question, name='qa_for_gq')
 ]

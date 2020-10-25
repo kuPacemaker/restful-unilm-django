@@ -1,7 +1,7 @@
 import pandas
 from base import BaseKnowledge
 
-class GQQAStatistic:
+class GQQAHistory:
 
     def __init__(self):
         self.clear()

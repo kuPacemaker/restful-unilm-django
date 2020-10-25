@@ -7,10 +7,10 @@ import remote.api as RemoteApi
 from base import BaseKnowledge
 from qg_interface.protocol import QGProtocol
 from .protocol import GQQAProtocol
-from .statistic import GQQAStatistic
+from .statistic import GQQAHistory
 
 # Create your views here.
-statistic = GQQAStatistic()
+history = GQQAHistory()
 @api_view(['POST'])
 def answer_generation_for_generated_question(request):
     if request.method == 'POST':
