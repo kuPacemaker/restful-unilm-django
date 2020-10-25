@@ -28,7 +28,7 @@ class GQQAHistory:
                 self.history['Generated Question'].append(question)
 
     def to_dataframe(self):
-        return pandas.DataFrame(self.data)
+        return pandas.DataFrame(self.history)
 
     def to_html(self):
         return self.to_dataframe().df.to_html()
