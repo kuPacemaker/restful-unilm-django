@@ -16,12 +16,3 @@ def answer_generation(request):
         RemoteApi.call(QAProtocol(bkd, question=q))
         return Response(bkd.jsonate())
     return Response({"message": "The GET method is not appropriate."})
-
-@api_view(['POST'])
-def answer_generation_for_generated_question(request):
-    if request.method == 'POST':
-        bkd = BaseKnowledge(request.data['bkd'])
-        RemoteApi.call(QGProtocol(bkd))
-        RemoteApi.call(GQQAProtocol(bkd))
-        return Response(bkd.jsonate())
-    return Response({"message": "The GET method is not appropriate."})
