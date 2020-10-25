@@ -1,5 +1,5 @@
-from remote.protocol import AbstractProtocol
-from base.models import BaseKnowledge
+from remote import AbstractProtocol
+from base import BaseKnowledge
 
 class QAProtocol(AbstractProtocol):
     node = ('117.16.136.170', 3421)
@@ -41,7 +41,9 @@ class GQQAProtocol(AbstractProtocol):
         for passage in self.bkd.passages:
             text = passage.text
             aqset = passage.aqset
+            passage.prev_aqset = aqset
             query = ''
+
             self.questions = list(map(lambda x: x[1], aqset))
             for answer, question in aqset:
                 query += self.sep(text, question)
