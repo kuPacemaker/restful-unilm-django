@@ -16,8 +16,10 @@ def answer_generation_for_generated_question(request):
     if request.method == 'POST':
         bkd = BaseKnowledge(request.data['bkd'])
         RemoteApi.call(QGProtocol(bkd))
-        
+        history.add_qg_result(bkd)
+
         RemoteApi.call(GQQAProtocol(bkd))
+        history.add_qa_result(bkd)
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 gqqa = answer_generation_for_generated_question
