@@ -134,5 +134,5 @@ CORS_ORIGIN_WHITELIST = [
     'google.com',
     'localhost:8000',
     'github.io',
-    'kupacemaker.github.io'
+    'https://kupacemaker.github.io'
 ]
