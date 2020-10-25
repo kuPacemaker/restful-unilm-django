@@ -37,9 +37,9 @@ class GQQAHistory:
 
     def save_csv(self):
         if not os.path.exists(self.csv_file):
-            self.df.to_csv(self.csv_file, mode='w')
+            self.df.to_csv(self.csv_file, mode='w', ignoreIndex=True)
         else:
-            self.df.to_csv(self.csv_file, mode='a', header=False)
+            self.df.to_csv(self.csv_file, mode='a', header=False, ignoreIndex=True)
         return self.df
 
     def clear(self):
