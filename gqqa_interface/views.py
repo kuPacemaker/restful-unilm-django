@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.cache import cache
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -20,6 +21,7 @@ def answer_generation_for_generated_question(request):
 
         RemoteApi.call(GQQAProtocol(bkd))
         history.add_qa_result(bkd)
+        cache.set('history-html', history.to_html())
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 gqqa = answer_generation_for_generated_question
@@ -29,7 +31,7 @@ def gqqa_request_history(request):
     if request.method == 'DELETE':
         history.clear()
     elif request.method == 'GET':
-        return HttpResponse(with_style(history.to_html()))
+        return HttpResponse(with_style(cache.get('history-html')))
     return Response({"message": "The %s method is not appropriate." % request.method})
 
 def with_style(html):
