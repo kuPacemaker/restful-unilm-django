@@ -29,6 +29,9 @@ def gqqa_request_history(request):
     if request.method == 'DELETE':
         history.clear()
     elif request.method == 'GET':
-        return HttpResponse(history.to_html())
+        return HttpResponse(with_style(history.to_html()))
     return Response({"message": "The %s method is not appropriate." % request.method})
+
+def with_style(html):
+    return '<link rel="stylesheet" href="https://cdn.jupyter.org/notebook/5.1.0/style/style.min.css">' + html
 gqqa_history = gqqa_request_history
