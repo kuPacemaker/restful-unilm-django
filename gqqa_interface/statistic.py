@@ -23,7 +23,7 @@ class GQQAHistory:
             print(len(passage.aqset))
             for answer, _ in passage.aqset:
                 self.row['Generated Answer'].append(answer)
-        self.df.append(self.row)
+        self.df = pandas.concat([self.df, self.row])
 
     def add_qg_result(self, bkd: BaseKnowledge):
         for passage in bkd.passages:
@@ -37,9 +37,9 @@ class GQQAHistory:
 
     def save_csv(self):
         if not os.path.exists(self.csv_file):
-            self.df.to_csv(self.csv_file, mode='w', ignore_index=True)
+            self.df.to_csv(self.csv_file, mode='w', index=False)
         else:
-            self.df.to_csv(self.csv_file, mode='a', header=False, ignore_index=True)
+            self.df.to_csv(self.csv_file, mode='a', header=False, index=False)
         return self.df
 
     def clear(self):
