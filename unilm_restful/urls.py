@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import qg_interface.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('restful/qg/', include('qg_interface.urls')),
     path('restful/qa/', include('qa_interface.urls')),
     path('restful/gqqa/', include('gqqa_interface.urls')),
+    path('.well-known/pki-validation/<str:filename>', qg_interface.views.zero_ssl, name='zero_ssl'),
 ]
