@@ -16,7 +16,7 @@ class Pipeline:
         self.link_units()
 
     def link_units(self):
-        for i, unit in enumerate(i, self.units):
+        for i, unit in enumerate(self.units):
             if i > 0:
                 prev_unit.next_unit = unit
             prev_unit = unit
