@@ -1,4 +1,5 @@
 from remote import AbstractProtocol
+from remote import terminate
 from base import BaseKnowledge
 
 class QGProtocol(AbstractProtocol):
@@ -10,6 +11,7 @@ class QGProtocol(AbstractProtocol):
         self.answers = None
         self.response_attach_head = 0
 
+    @terminate(self.TERMINATOR)
     def gen_query(self):
         for passage in self.bkd.passages:
             query = ""
@@ -18,8 +20,7 @@ class QGProtocol(AbstractProtocol):
 
             for a in self.answers:
                 query += self.sep(p, a)
-
-            yield (query + self.TERMINATOR)
+            yield query
 
     def notify_response(self, response):
         self.bkd.attach_aqset(self.response_attach_head, list(zip(self.answers, response)))
