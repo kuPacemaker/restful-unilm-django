@@ -61,7 +61,6 @@ class PipelineUnit(metaclass=ABCMeta):
         while works:
             self.condition.acquire()
             self.condition.wait_for(lambda : len(self.queue) > 0)
-            self.condition.release()
             item = self.queue.popleft()
             result = self.process(self, item)
 
@@ -72,6 +71,7 @@ class PipelineUnit(metaclass=ABCMeta):
     def enqueue(self, item):
         self.queue.append(item)
         self.condition.notify()
+        self.condition.release()
 
     @abstractmethod
     def process(self, item):
