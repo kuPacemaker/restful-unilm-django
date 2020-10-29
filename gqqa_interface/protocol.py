@@ -1,4 +1,5 @@
 from remote import AbstractProtocol
+from remote.annotation import terminate
 from base import BaseKnowledge
 
 class GQQAProtocol(AbstractProtocol):
