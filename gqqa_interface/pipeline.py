@@ -61,8 +61,6 @@ class PipelineUnit(metaclass=ABCMeta):
             waiting.wait(lambda: len(self.queue) > 0)
             item = self.queue.popleft()
             result = self.process(self, item)
-            print(self, "start working.")
-            print("Result: ", result.aqset)
             self.result_queue.append(result)
             self.enqueue(self.next_unit, result)
             works = works - 1
@@ -86,6 +84,7 @@ class QAUnit(PipelineUnit):
 
     def process(self, passage):
         pseudo_bkd = BaseKnowledge(passage.text)
+        pseudo_bkd.passages[0].aqset = passage.aqset
         RemoteApi.call(GQQAProtocol(pseudo_bkd))
         return pseudo_bkd.passages[0]
         
