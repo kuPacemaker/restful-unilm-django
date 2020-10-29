@@ -52,7 +52,6 @@ def psg_split(text, max_words):
     result_psgs = []
 
     for psg, n_words in zip(psgs, w_counter):
-        print(n_words)
         if n_words <= max_words:
             result_psgs.append(psg)
         else:
@@ -76,5 +75,5 @@ def recursive_psg_split(psg_toks, max_words, result_psgs):
         
         next_psg_toks = psg_toks[end_pos: n_words]
         recursive_psg_split(next_psg_toks, max_words, result_psgs)
-    else:
+    elif n_words > 0:
         result_psgs.append(' '.join(psg_toks))
