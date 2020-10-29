@@ -1,4 +1,4 @@
-from ABC import ABCMeta, abstractmethod
+from abc import ABCMeta, abstractmethod
 from collections import deque
 import threading
 
