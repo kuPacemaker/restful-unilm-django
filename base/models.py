@@ -6,6 +6,7 @@ import json
 class BaseKnowledge:
     
     def __init__(self, text):
+        text = text.replace('\n', '')
         self.passages = passaginate(text, noun_sorting=True)
         self.nouns = list(reduce(lambda x, y: set(x) | set(y), 
                             [p.nouns for p in self.passages]))
