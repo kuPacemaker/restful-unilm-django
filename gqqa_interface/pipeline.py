@@ -59,13 +59,14 @@ class PipelineUnit(metaclass=ABCMeta):
 
     def work(self, works):
         while works:
+            self.condition.aquire()
             self.condition.wait_for(lambda : len(self.queue) > 0)
-            
+            self.condition.release()
             item = self.queue.popleft()
             result = self.process(self, item)
 
             self.result_queue.append(result)
-            self.next_unit.enqueue(item)
+            self.next_unit.enqueue(self.next_unit, item)
             works = works - 1
 
     def enqueue(self, item):
