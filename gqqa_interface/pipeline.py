@@ -1,4 +1,3 @@
-from abc import ABCMeta, abstractmethod
 from collections import deque
 import threading, waiting
 
@@ -22,17 +21,17 @@ class Pipeline:
             prev_unit = unit
 
     def start(self, bkd):
-        items = bkd.passages
+        inputs = bkd.passages
         threads = []
 
         for unit in reversed(self.units):
             if self.first_unit == unit:
                 threads.append(
-                    unit.start(unit, items=items, works=len(items))
+                    unit.start(unit, inputs=inputs, works=len(inputs))
                 )
             else:
                 threads.append(
-                    unit.start(unit, works=len(items))
+                    unit.start(unit, works=len(inputs))
                 )
 
         for th in threads:
@@ -40,51 +39,44 @@ class Pipeline:
 
         return list(self.last_unit.result_queue)
 
-class PipelineUnit(metaclass=ABCMeta):
+class PipelineUnit:
 
-    def __init__(self):
-        self.queue = None
-        self.th = None
-        self.result_queue = None
-
-    def start(self, items=None, works=None):
-        self.queue = deque(items if items is not None else [])
+    def start(self, inputs=None, works=None):
+        self.queue = deque(inputs if inputs is not None else [])
         self.result_queue = deque()
         self.th = threading.Thread(target=self.work, name="", args=(self, works))
         self.th.start()
-        print(self, "isOn.")
         return self.th
 
     def work(self, works):
         while works:
             waiting.wait(lambda: len(self.queue) > 0)
-            item = self.queue.popleft()
-            result = self.process(self, item)
+            input = self.queue.popleft()
+            result = self.process(self, input)
             self.result_queue.append(result)
             if hasattr(self, 'next_unit'):
                 self.enqueue(self.next_unit, result)
             works = works - 1
 
-    def enqueue(self, item):
-        self.queue.append(item)
+    def enqueue(self, input):
+        self.queue.append(input)
 
-    @abstractmethod
-    def process(self, item):
-        pass
+    def process(self, input):
+        raise NotImplementedError
 
 
 class QGUnit(PipelineUnit):
 
-    def process(self, passage):
+    def process(self, input):
+        passage = input
         pseudo_bkd = BaseKnowledge(passage.text)
         RemoteApi.call(QGProtocol(pseudo_bkd))
-        return pseudo_bkd.passages[0]
+        return pseudo_bkd
 
 class QAUnit(PipelineUnit):
 
-    def process(self, passage):
-        pseudo_bkd = BaseKnowledge(passage.text)
-        pseudo_bkd.passages[0].aqset = passage.aqset
+    def process(self, input):
+        pseudo_bkd = input
         RemoteApi.call(GQQAProtocol(pseudo_bkd))
         return pseudo_bkd.passages[0]
         
