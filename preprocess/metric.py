@@ -11,5 +11,5 @@ class TfIdfLen:
     
     def fit_transform(self, word_list):
         tf = Counter(word_list)
-        tfidf_score = {noun: tf_score * math.log(self.num_docs / self.idf[noun]) * math.log(len(noun)) for noun, tf_score in tf.items()}
+        tfidf_score = {noun: tf_score * math.log(self.num_docs / self.idf[noun]) * math.log(len(noun)) / math.log(3.3) for noun, tf_score in tf.items()}
         return tfidf_score
