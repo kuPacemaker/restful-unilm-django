@@ -1,4 +1,3 @@
-from abc import ABCMeta, abstractmethod
 from collections import deque
 import threading, waiting
 
@@ -63,7 +62,6 @@ class PipelineUnit(metaclass=ABCMeta):
     def enqueue(self, item):
         self.queue.append(item)
 
-    @abstractmethod
     def process(self, item):
         pass
 
