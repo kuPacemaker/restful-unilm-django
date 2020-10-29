@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from collections import deque
-import threading
+import threading, waiting
 
 import remote.api as RemoteApi
 from base import BaseKnowledge
@@ -47,20 +47,17 @@ class PipelineUnit(metaclass=ABCMeta):
         self.next_unit = None
         self.th = None
         self.result_queue = None
-        self.condition = None
 
     def start(self, items=None, works=None):
         self.queue = deque(items if items is not None else [])
         self.result_queue = deque()
-        self.condition = threading.Condition()
         self.th = threading.Thread(target=self.work, name="", args=(self, works))
         self.th.start()
         return self.th
 
     def work(self, works):
         while works:
-            self.condition.acquire()
-            self.condition.wait_for(lambda : len(self.queue) > 0)
+            waiting.wait(self.queue > 0)
             item = self.queue.popleft()
             result = self.process(self, item)
 
@@ -70,8 +67,6 @@ class PipelineUnit(metaclass=ABCMeta):
 
     def enqueue(self, item):
         self.queue.append(item)
-        self.condition.notify()
-        self.condition.release()
 
     @abstractmethod
     def process(self, item):
