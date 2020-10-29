@@ -12,6 +12,7 @@ class Pipeline:
     def __init__(self, units):
         self.units = units
         self.first_unit = units[0]
+        self.last_unit = units[-1]
         self.link_units()
 
     def link_units(self):
@@ -37,16 +38,19 @@ class Pipeline:
         for th in thread:
             th.join()
 
+        return last_unit.result_queue
+
 class PipelineUnit(metaclass=ABCMeta):
 
     def __init__(self):
         self.queue = None
         self.next_unit = None
         self.th = None
-        self.result_queue = deque()
+        self.result_queue = None
 
     def start(self, items=None, works=None):
         self.queue = deque(items if itmes is not None else [])
+        self.result_queue = deque()
         self.th = threading.Thread(target=self.work, name="", args=(self, works))
         self.th.start()
         return self.th
@@ -57,10 +61,10 @@ class PipelineUnit(metaclass=ABCMeta):
             
             item = self.queue.popleft()
             result = self.process(item)
-            self.result_queue.append(result)
-            works = works - 1
 
+            self.result_queue.append(result)
             self.next_unit.enqueue(item)
+            works = works - 1
 
     def enqueue(self, item):
         self.queue.append(item)
@@ -71,14 +75,14 @@ class PipelineUnit(metaclass=ABCMeta):
         pass
 
 
-class QGUnit:
-    
+class QGUnit(PipelineUnit):
+
     def process(self, passage):
         pseudo_bkd = BaseKnowledge(passage)
         RemoteApi.call(QGProtocol(pseudo_bkd))
         return pseudo_bkd.passages[0]
 
-class QAUnit:
+class QAUnit(PipelineUnit):
 
     def process(self, passage):
         pseudo_bkd = BaseKnowledge(passage)

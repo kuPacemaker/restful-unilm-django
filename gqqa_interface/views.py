@@ -9,19 +9,18 @@ from qg_interface.protocol import QGProtocol
 from .protocol import GQQAProtocol
 from .statistic import GQQAHistory
 
+from .pipeline import Pipeline, QGUnit, QAUnit
+
 history = GQQAHistory('history.csv')
+pipeline = Pipeline([QGUnit, QAUnit])
+
 # Create your views here.
 @api_view(['POST'])
 def answer_generation_for_generated_question(request):
     if request.method == 'POST':
         bkd = BaseKnowledge(request.data['bkd'])
-
-        RemoteApi.call(QGProtocol(bkd))
-        history.add_qg_result(bkd)
-
-        RemoteApi.call(GQQAProtocol(bkd))
-        history.add_qa_result(bkd)
-        return Response(bkd.jsonate())
+        result = pipeline.start(bkd)
+        return Response(result)
     return Response({"message": "The %s method is not appropriate." % request.method})
 gqqa = answer_generation_for_generated_question
 
