@@ -38,7 +38,7 @@ class Pipeline:
         for th in threads:
             th.join()
 
-        return last_unit.result_queue
+        return self.last_unit.result_queue
 
 class PipelineUnit(metaclass=ABCMeta):
 
