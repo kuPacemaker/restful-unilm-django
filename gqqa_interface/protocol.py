@@ -1,4 +1,5 @@
 from remote import AbstractProtocol
+from remote.annotation import terminate
 from base import BaseKnowledge
 
 class GQQAProtocol(AbstractProtocol):
@@ -9,6 +10,7 @@ class GQQAProtocol(AbstractProtocol):
         self.questions = None
         self.response_attach_head = 0
 
+    @terminate(AbstractProtocol.TERMINATOR)
     def gen_query(self):
         for passage in self.bkd.passages:
             text = passage.text
@@ -18,7 +20,7 @@ class GQQAProtocol(AbstractProtocol):
             self.questions = list(map(lambda x: x[1], aqset))
             for answer, question in aqset:
                 query += self.sep(text, question)
-            yield (query + self.TERMINATOR)
+            yield query
 
     def notify_response(self, response):
         self.bkd.attach_aqset(self.response_attach_head, list(zip(response, self.questions)))
