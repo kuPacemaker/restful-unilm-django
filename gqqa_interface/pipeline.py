@@ -39,7 +39,7 @@ class Pipeline:
 
         return list(self.last_unit.result_queue)
 
-class PipelineUnit(metaclass=ABCMeta):
+class PipelineUnit:
 
     def start(self, inputs=None, works=None):
         self.queue = deque(inputs if inputs is not None else [])
