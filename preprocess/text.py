@@ -5,7 +5,6 @@ from .metric import TfIdfLen
 def passaginate(text, max_words=120, noun_sorting=False):
     psgs = psg_split(text, max_words)
     passages = list(map(Passage, psgs))
-
     if noun_sorting:
         tfidf = TfIdfLen([passage.nouns for passage in passages])
         for passage in passages:
@@ -47,7 +46,7 @@ def noun_trim(noun):
     return noun.strip("\'“”. ")
 
 def psg_split(text, max_words):
-    psgs = [text]
+    psgs = [p for p in text.split('\n') if p != '']
     w_counter = [1 + p.count(' ') for p in psgs]
     result_psgs = []
 
@@ -63,6 +62,7 @@ def recursive_psg_split(psg_toks, max_words, result_psgs):
     n_words = len(psg_toks)
     if n_words > max_words:
         end_pos = max_words
+        print(psg_toks)
         for pos in range(max_words - 1, n_words):
             if len(psg_toks[pos]) > 0:
                 if psg_toks[pos][-1] == '.':
