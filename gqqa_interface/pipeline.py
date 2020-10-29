@@ -41,29 +41,28 @@ class Pipeline:
 
 class PipelineUnit(metaclass=ABCMeta):
 
-    def start(self, items=None, works=None):
-        self.queue = deque(items if items is not None else [])
+    def start(self, inputs=None, works=None):
+        self.queue = deque(inputs if inputs is not None else [])
         self.result_queue = deque()
         self.th = threading.Thread(target=self.work, name="", args=(self, works))
         self.th.start()
-        print(self, "isOn.")
         return self.th
 
     def work(self, works):
         while works:
             waiting.wait(lambda: len(self.queue) > 0)
-            item = self.queue.popleft()
-            result = self.process(self, item)
+            input = self.queue.popleft()
+            result = self.process(self, input)
             self.result_queue.append(result)
             if hasattr(self, 'next_unit'):
                 self.enqueue(self.next_unit, result)
             works = works - 1
 
-    def enqueue(self, item):
-        self.queue.append(item)
+    def enqueue(self, input):
+        self.queue.append(input)
 
-    def process(self, item):
-        pass
+    def process(self, input):
+        raise NotImplementedError
 
 
 class QGUnit(PipelineUnit):
