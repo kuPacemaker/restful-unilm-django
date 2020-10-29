@@ -62,7 +62,7 @@ class PipelineUnit(metaclass=ABCMeta):
             self.condition.wait_for(lambda : len(self.queue) > 0)
             
             item = self.queue.popleft()
-            result = self.process(item)
+            result = self.process(self, item)
 
             self.result_queue.append(result)
             self.next_unit.enqueue(item)
