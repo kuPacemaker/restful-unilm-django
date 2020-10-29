@@ -21,13 +21,13 @@ class Pipeline:
             prev_unit = unit
 
     def start(self, bkd):
-        items = bkd.passages
+        inputs = bkd.passages
         threads = []
 
         for unit in reversed(self.units):
             if self.first_unit == unit:
                 threads.append(
-                    unit.start(unit, items=items, works=len(items))
+                    unit.start(unit, inputs=inputs, works=len(items))
                 )
             else:
                 threads.append(
