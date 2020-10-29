@@ -47,6 +47,7 @@ class PipelineUnit(metaclass=ABCMeta):
         self.next_unit = None
         self.th = None
         self.result_queue = None
+        self.cv = threading.Condition()
 
     def start(self, items=None, works=None):
         self.queue = deque(items if items is not None else [])
@@ -57,7 +58,7 @@ class PipelineUnit(metaclass=ABCMeta):
 
     def work(self, works):
         while works:
-            self.th.wait_for(len(self.queue) > 0)
+            self.cv.wait_for(len(self.queue) > 0)
             
             item = self.queue.popleft()
             result = self.process(item)
