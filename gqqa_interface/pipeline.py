@@ -44,7 +44,6 @@ class PipelineUnit(metaclass=ABCMeta):
 
     def __init__(self):
         self.queue = None
-        self.next_unit = None
         self.th = None
         self.result_queue = None
 
@@ -62,7 +61,7 @@ class PipelineUnit(metaclass=ABCMeta):
             item = self.queue.popleft()
             result = self.process(self, item)
             self.result_queue.append(result)
-            if self.next_unit is not None:
+            if hasattr(self, 'next_unit'):
                 self.enqueue(self.next_unit, result)
             works = works - 1
 
