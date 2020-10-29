@@ -72,7 +72,7 @@ class QGUnit(PipelineUnit):
         passage = input
         pseudo_bkd = BaseKnowledge(passage.text)
         RemoteApi.call(QGProtocol(pseudo_bkd))
-        return pseudo_bkd.passages[0]
+        return pseudo_bkd
 
 class QAUnit(PipelineUnit):
 
