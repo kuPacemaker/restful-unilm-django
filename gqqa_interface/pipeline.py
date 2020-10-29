@@ -42,11 +42,6 @@ class Pipeline:
 
 class PipelineUnit(metaclass=ABCMeta):
 
-    def __init__(self):
-        self.queue = None
-        self.th = None
-        self.result_queue = None
-
     def start(self, items=None, works=None):
         self.queue = deque(items if items is not None else [])
         self.result_queue = deque()
