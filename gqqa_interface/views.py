@@ -20,7 +20,7 @@ def answer_generation_for_generated_question(request):
     if request.method == 'POST':
         bkd = BaseKnowledge(request.data['bkd'])
         bkd.passages = pipeline.start(bkd)
-        return Response(bkd)
+        return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 gqqa = answer_generation_for_generated_question
 
