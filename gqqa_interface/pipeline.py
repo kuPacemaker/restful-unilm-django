@@ -27,7 +27,7 @@ class Pipeline:
         for unit in reversed(self.units):
             if self.first_unit == unit:
                 threads.append(
-                    unit.start(unit, inputs=inputs, works=len(items))
+                    unit.start(unit, inputs=inputs, works=len(inputs))
                 )
             else:
                 threads.append(
