@@ -16,7 +16,7 @@ class QAProtocol(AbstractProtocol):
         for i, p in enumerate(self.bkd.all_text()):
             if i % self.num_case == 0:
                 if i != 0:
-                    yield (query + self.TERMINATOR)
+                    yield query
                 query = ""
 
             query += self.sep(p, self.question)
