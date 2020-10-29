@@ -62,7 +62,7 @@ class PipelineUnit(metaclass=ABCMeta):
             result = self.process(self, item)
 
             self.result_queue.append(result)
-            self.next_unit.enqueue(self.next_unit, item)
+            self.next_unit.enqueue(self.next_unit, result)
             works = works - 1
 
     def enqueue(self, item):
