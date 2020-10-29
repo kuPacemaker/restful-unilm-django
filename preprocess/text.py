@@ -5,7 +5,7 @@ from .metric import TfIdfLen
 def passaginate(text, max_words=120, noun_sorting=False):
     psgs = psg_split(text, max_words)
     passages = list(map(Passage, psgs))
-    print(psgs, sep='\n')
+
     if noun_sorting:
         tfidf = TfIdfLen([passage.nouns for passage in passages])
         for passage in passages:
@@ -52,6 +52,7 @@ def psg_split(text, max_words):
     result_psgs = []
 
     for psg, n_words in zip(psgs, w_counter):
+        print(n_words)
         if n_words <= max_words:
             result_psgs.append(psg)
         else:
