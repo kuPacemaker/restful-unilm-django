@@ -35,7 +35,7 @@ class Pipeline:
                     unit.start(unit, works=len(items))
                 )
 
-        for th in thread:
+        for th in threads:
             th.join()
 
         return last_unit.result_queue
