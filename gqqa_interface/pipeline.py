@@ -49,7 +49,7 @@ class PipelineUnit(metaclass=ABCMeta):
         self.result_queue = None
 
     def start(self, items=None, works=None):
-        self.queue = deque(items if itmes is not None else [])
+        self.queue = deque(items if items is not None else [])
         self.result_queue = deque()
         self.th = threading.Thread(target=self.work, name="", args=(self, works))
         self.th.start()
