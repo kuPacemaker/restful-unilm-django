@@ -47,9 +47,7 @@ def noun_trim(noun):
     return noun.strip("\'“”. ")
 
 def psg_split(text, max_words):
-    psgs = [p for p in text.split('\n') if p != '']
-    for i, p in enumerate(psgs):
-        print(i, p)
+    psgs = [text]
     w_counter = [1 + p.count(' ') for p in psgs]
     result_psgs = []
 
