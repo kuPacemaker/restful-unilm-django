@@ -53,6 +53,7 @@ class PipelineUnit(metaclass=ABCMeta):
         self.result_queue = deque()
         self.th = threading.Thread(target=self.work, name="", args=(self, works))
         self.th.start()
+        print(self, "isOn.")
         return self.th
 
     def work(self, works):
