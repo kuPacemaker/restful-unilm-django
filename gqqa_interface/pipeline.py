@@ -59,7 +59,7 @@ class PipelineUnit(metaclass=ABCMeta):
 
     def work(self, works):
         while works:
-            self.condition.aquire()
+            self.condition.acquire()
             self.condition.wait_for(lambda : len(self.queue) > 0)
             self.condition.release()
             item = self.queue.popleft()
