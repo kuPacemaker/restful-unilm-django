@@ -2,7 +2,7 @@ import nltk
 from textblob import TextBlob
 from .metric import TfIdfLen
 
-def passaginate(text, max_words=412, noun_sorting=False):
+def passaginate(text, max_words=120, noun_sorting=False):
     psgs = psg_split(text, max_words)
     passages = list(map(Passage, psgs))
 
@@ -63,15 +63,17 @@ def recursive_psg_split(psg_toks, max_words, result_psgs):
     n_words = len(psg_toks)
     if n_words > max_words:
         end_pos = max_words
+
         for pos in range(max_words - 1, n_words):
-            if psg_toks[pos][-1] == '.':
-                end_pos = pos + 1
-                break
+            if len(psg_toks[pos]) > 0:
+                if psg_toks[pos][-1] == '.':
+                    end_pos = pos + 1
+                    break
                 
         trimmed_psg_toks = psg_toks[0: end_pos]
         result_psgs.append(' '.join(trimmed_psg_toks))
         
         next_psg_toks = psg_toks[end_pos: n_words]
         recursive_psg_split(next_psg_toks, max_words, result_psgs)
-    else:
+    elif n_words > 0:
         result_psgs.append(' '.join(psg_toks))
