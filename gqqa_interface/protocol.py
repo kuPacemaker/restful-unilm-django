@@ -10,7 +10,7 @@ class GQQAProtocol(AbstractProtocol):
         self.questions = None
         self.response_attach_head = 0
 
-    @terminate(self.TERMINATOR)
+    @terminate(AbstractProtocol.TERMINATOR)
     def gen_query(self):
         for passage in self.bkd.passages:
             text = passage.text

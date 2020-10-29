@@ -11,6 +11,7 @@ class QAProtocol(AbstractProtocol):
         self.question = question
         self.response_attach_head = 0
 
+    @terminate(AbstractProtocol.TERMINATOR)
     def gen_query(self):
         for i, p in enumerate(self.bkd.all_text()):
             if i % self.num_case == 0:
@@ -19,8 +20,7 @@ class QAProtocol(AbstractProtocol):
                 query = ""
 
             query += self.sep(p, self.question)
-
-        yield (query + self.TERMINATOR)
+        yield query
 
     def notify_response(self, response):
         for res in response:

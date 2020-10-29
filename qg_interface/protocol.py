@@ -11,7 +11,7 @@ class QGProtocol(AbstractProtocol):
         self.answers = None
         self.response_attach_head = 0
 
-    @terminate(self.TERMINATOR)
+    @terminate(AbstractProtocol.TERMINATOR)
     def gen_query(self):
         for passage in self.bkd.passages:
             query = ""
