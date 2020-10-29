@@ -31,7 +31,7 @@ class Pipeline:
                 )
             else:
                 threads.append(
-                    unit.start(unit, works=len(items))
+                    unit.start(unit, works=len(inputs))
                 )
 
         for th in threads:
