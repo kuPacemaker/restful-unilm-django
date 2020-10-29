@@ -71,7 +71,7 @@ class PipelineUnit(metaclass=ABCMeta):
 
     def enqueue(self, item):
         self.queue.append(item)
-        #self.th.notify()
+        self.condition.notify()
 
     @abstractmethod
     def process(self, item):
