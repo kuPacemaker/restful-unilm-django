@@ -80,14 +80,14 @@ class PipelineUnit(metaclass=ABCMeta):
 class QGUnit(PipelineUnit):
 
     def process(self, passage):
-        pseudo_bkd = BaseKnowledge(passage)
+        pseudo_bkd = BaseKnowledge(passage.text)
         RemoteApi.call(QGProtocol(pseudo_bkd))
         return pseudo_bkd.passages[0]
 
 class QAUnit(PipelineUnit):
 
     def process(self, passage):
-        pseudo_bkd = BaseKnowledge(passage)
+        pseudo_bkd = BaseKnowledge(passage.text)
         RemoteApi.call(GQQAProtocol(pseudo_bkd))
         return pseudo_bkd.passages[0]
         
