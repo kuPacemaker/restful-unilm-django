@@ -7,7 +7,7 @@ class AbstractProtocol(metaclass=ABCMeta):
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'node'):
-            raise NotImplementedError('Protocol needs the target node info: tuple of (HOST, PORT)')
+            raise NotImplementedError('Protocol needs the target node\'s info: tuple of (HOST, PORT)')
         return object.__new__(cls)
 
     @abstractmethod
