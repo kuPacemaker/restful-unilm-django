@@ -27,11 +27,11 @@ class Pipeline:
         for unit in reversed(self.units):
             if self.first_unit == unit:
                 threads.append(
-                    unit.start(unit, inputs=inputs, n_works=len(inputs))
+                    unit.start(inputs=inputs, n_works=len(inputs))
                 )
             else:
                 threads.append(
-                    unit.start(unit, n_works=len(inputs))
+                    unit.start(n_works=len(inputs))
                 )
 
         for th in threads:
@@ -48,7 +48,7 @@ class PipelineUnit:
         self.th = None
 
     def start(self, inputs=None, n_works=None):
-        self.queue = deque(inputs if inputs is not None else [])
+        self.queue = deque(inputs if inputs else [])
         self.result_queue = deque()
         self.th = threading.Thread(target=self.run, name="", args=(self, n_works))
         self.th.start()
@@ -63,7 +63,7 @@ class PipelineUnit:
 
             if self.next_unit:
                 self.next_unit.enqueue(result)
-                
+
             n_works = n_works - 1
 
     def enqueue(self, input):
