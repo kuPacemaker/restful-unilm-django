@@ -50,7 +50,7 @@ class PipelineUnit:
     def start(self, inputs=None, n_works=None):
         self.queue = deque(inputs if inputs else [])
         self.result_queue = []
-        self.th = threading.Thread(target=self.run, name="", args=(self, n_works))
+        self.th = threading.Thread(target=self.run, name="", args=(n_works, ))
         self.th.start()
         return self.th
 
