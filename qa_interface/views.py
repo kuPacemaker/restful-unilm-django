@@ -10,7 +10,7 @@ from .protocol import QAProtocol
 @api_view(['POST'])
 def answer_generation(request):
     if request.method == 'POST':
-        bkd = BaseKnowledge(request.data['bkd'], 450)
+        bkd = BaseKnowledge(request.data['bkd'], 1000)
         q = request.data['q']
         RemoteApi.call(QAProtocol(bkd, question=q))
         return Response(bkd.jsonate())
