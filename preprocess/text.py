@@ -2,7 +2,7 @@ import nltk
 from textblob import TextBlob
 from .metric import TfIdfLen
 
-def passaginate(text, max_words=120, noun_sorting=False):
+def passaginate(text, max_words, noun_sorting=False):
     psgs = psg_split(text, max_words)
     passages = list(map(Passage, psgs))
 
