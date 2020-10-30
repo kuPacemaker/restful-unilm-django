@@ -4,6 +4,7 @@ def call(protocol):
     HOST, PORT, QUERY, TIMEOUT = protocol.parse()
 
     for each_query in QUERY:
+        print(each_query)
         with setup_socket_connection(HOST, PORT, TIMEOUT) as csock:
             csock.sendall(each_query.encode())
             res = csock.recv(4096).decode('utf-8')
