@@ -27,36 +27,44 @@ class Pipeline:
         for unit in reversed(self.units):
             if self.first_unit == unit:
                 threads.append(
-                    unit.start(unit, inputs=inputs, works=len(inputs))
+                    unit.start(unit, inputs=inputs, n_works=len(inputs))
                 )
             else:
                 threads.append(
-                    unit.start(unit, works=len(inputs))
+                    unit.start(unit, n_works=len(inputs))
                 )
 
         for th in threads:
             th.join()
 
-        return list(self.last_unit.result_queue)
+        return self.last_unit.result_queue
 
 class PipelineUnit:
 
-    def start(self, inputs=None, works=None):
+    def __init__(self):
+        self.queue = None
+        self.result_queue = None
+        self.next_unit = None
+        self.th = None
+
+    def start(self, inputs=None, n_works=None):
         self.queue = deque(inputs if inputs is not None else [])
         self.result_queue = deque()
-        self.th = threading.Thread(target=self.work, name="", args=(self, works))
+        self.th = threading.Thread(target=self.run, name="", args=(self, n_works))
         self.th.start()
         return self.th
 
-    def work(self, works):
-        while works:
+    def run(self, n_works):
+        while n_works:
             waiting.wait(lambda: len(self.queue) > 0)
             input = self.queue.popleft()
-            result = self.process(self, input)
+            result = self.process(input)
             self.result_queue.append(result)
-            if hasattr(self, 'next_unit'):
-                self.enqueue(self.next_unit, result)
-            works = works - 1
+
+            if self.next_unit:
+                self.next_unit.enqueue(result)
+                
+            n_works = n_works - 1
 
     def enqueue(self, input):
         self.queue.append(input)
