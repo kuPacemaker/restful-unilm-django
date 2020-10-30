@@ -24,7 +24,8 @@ class QAProtocol(AbstractProtocol):
 
     def notify_response(self, response):
         for res in response:
-            self.bkd.attach_aqset(self.response_attach_head, [(res, self.question)])
+            answer, score = self.detok_score(res)
+            self.bkd.attach_aqset(self.response_attach_head, [(answer, self.question, score)])
             self.response_attach_head += 1
 
     def protocol_reset(self):

@@ -24,3 +24,8 @@ class AbstractProtocol(metaclass=ABCMeta):
     @classmethod
     def sep(cls, str1, str2):
         return "%s [SEP] %s\n" % (str1, str2)
+
+    @classmethod
+    def detok_score(cls, res):
+        detok = [s.strip() for s in res.split(' [SCO] ')]
+        return detok[0], float(detok[1])
