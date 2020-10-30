@@ -57,12 +57,14 @@ class PipelineUnit:
     def run(self, n_works):
         while n_works:
             waiting.wait(lambda: len(self.queue) > 0)
+
             input = self.queue.popleft()
             result = self.process(input)
-            self.result_queue.append(result)
-
+            
             if self.next_unit:
                 self.next_unit.enqueue(result)
+            else:
+                self.result_queue.append(result)
 
             n_works = n_works - 1
 

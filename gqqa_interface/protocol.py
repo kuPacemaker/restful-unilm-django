@@ -23,8 +23,12 @@ class GQQAProtocol(AbstractProtocol):
             yield query
 
     def notify_response(self, response):
-        answer, score = self.detok_score(response)
-        self.bkd.attach_aqset(self.response_attach_head, list(zip(answer, self.questions, score)))
+        answers, scores = [], []
+        for res in response:
+            answer, score = self.detok_score(res)
+            answers.append(answer)
+            scores.append(score)
+        self.bkd.attach_aqset(self.response_attach_head, list(zip(answers, self.questions, scores)))
         self.response_attach_head += 1
 
     def protocol_reset(self):
