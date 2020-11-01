@@ -10,6 +10,7 @@ from .protocol import GQQAProtocol
 from .statistic import GQQAHistory
 
 from .pipeline import Pipeline, QGUnit, QAUnit
+
 history = GQQAHistory('history.csv')
 pipeline = Pipeline([QGUnit(), QAUnit()])
 
