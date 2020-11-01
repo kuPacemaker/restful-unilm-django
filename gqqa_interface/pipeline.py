@@ -80,7 +80,7 @@ class QGUnit(PipelineUnit):
     def process(self, input):
         passage = input
         pseudo_bkd = BaseKnowledge(passage.text)
-        pseudo_bkd.passages[0].nouns = passage.nouns
+        pseudo_bkd.passages = [passage]
         RemoteApi.call(QGProtocol(pseudo_bkd, num_case=3))
         return pseudo_bkd
 
