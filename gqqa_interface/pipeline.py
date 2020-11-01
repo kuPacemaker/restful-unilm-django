@@ -1,5 +1,5 @@
 from collections import deque
-import threading, waiting
+import threading, waiting, copy
 
 import remote.api as RemoteApi
 from base import BaseKnowledge
@@ -27,7 +27,7 @@ class Pipeline:
         for unit in reversed(self.units):
             if self.first_unit == unit:
                 threads.append(
-                    unit.start(inputs=inputs, n_works=len(inputs))
+                    unit.start(inputs=list(zip(inputs, range(len(inputs)))), n_works=len(inputs))
                 )
             else:
                 threads.append(
@@ -79,7 +79,8 @@ class QGUnit(PipelineUnit):
 
     def process(self, input):
         passage = input
-        pseudo_bkd = BaseKnowledge(passage.text)
+        pseudo_bkd = copy.copy(input[0])
+        pseudo_bkd.passages = [pseudo_bkd.passages[input[1]]]
         RemoteApi.call(QGProtocol(pseudo_bkd, num_case=3))
         return pseudo_bkd
 
