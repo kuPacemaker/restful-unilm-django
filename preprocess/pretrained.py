@@ -8,5 +8,5 @@ class SquadTfidfVectorizer:
     @classmethod
     def load(cls):
         if cls.instance is None:
-            cls.instance = pickle.load(open(cls.src, 'rb'))
+            cls.instance = pickle.loads(open(cls.src, 'rb'))
         return cls.instance
