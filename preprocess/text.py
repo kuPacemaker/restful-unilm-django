@@ -9,7 +9,7 @@ def passaginate(text, max_words, noun_sorting=False):
     vocab = metric.vocab
 
     if noun_sorting:
-        scores = metric.transform(passages)
+        scores = metric.transform(psgs)
         for i, passage in enumerate(passages):
             passage.noun_sort(scores[i], vocab=vocab, inplace=True, reverse=True)
     return passages
