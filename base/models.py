@@ -29,6 +29,9 @@ class BaseKnowledge:
         for passage in self.passages:
             amount = min(len(passage.nouns), global_amount)
             passage.nouns = passage.nouns[:amount]
+            
+        self.nouns = list(reduce(lambda x, y: set(x) | set(y), 
+                            [p.nouns for p in self.passages]))
     
     def prune_nouns_amount(self):
         return 3 + int(3 / len(self.passages))
