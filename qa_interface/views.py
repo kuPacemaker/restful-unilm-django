@@ -15,6 +15,5 @@ def answer_generation(request):
 
         RemoteApi.call(QAProtocol(bkd, question=q, num_case=1))
         bkd.prune_passage()
-        
         return Response(bkd.jsonate())
-    return Response({"message": "The GET method is not appropriate."})
+    return Response({"message": "The %s method is not appropriate." % request.method})

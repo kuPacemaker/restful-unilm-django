@@ -24,5 +24,13 @@ class BaseKnowledge:
                 top_passage, top_score = passage, score
         self.passages = [top_passage]
         
+    def prune_nouns(self):
+        amount = self.prune_nouns_amount()
+        for passage in self.passages:
+            passage.nouns = passage.nouns[amount]
+    
+    def prune_nouns_amount(self):
+        return 3 + int(3 / len(bkd.passages))
+
     def jsonate(self):
         return json.loads(json.dumps(self, default=lambda o: o.__dict__, indent = 4))

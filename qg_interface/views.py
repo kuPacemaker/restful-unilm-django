@@ -20,7 +20,7 @@ def question_generation(request):
 def noun_extraction(request):
     if request.method == 'POST':
         bkd = BaseKnowledge(request.data['bkd'])
-        bkd.nouns = bkd.nouns[3 + int(3 / len(bkd.passages))]
+        bkd.prune_nouns()
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 
