@@ -74,7 +74,6 @@ class PipelineUnit:
     def process(self, input):
         raise NotImplementedError
 
-
 class QGUnit(PipelineUnit):
 
     def process(self, input):

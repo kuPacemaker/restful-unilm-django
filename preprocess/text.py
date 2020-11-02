@@ -1,16 +1,16 @@
 import nltk
 from textblob import TextBlob
-from .metric import TfIdfLen
+from .metric import SquadTfIdf
 
 def passaginate(text, max_words, noun_sorting=False):
     psgs = psg_split(text, max_words)
     passages = list(map(Passage, psgs))
+    tfidf = SquadTfIdf()
 
     if noun_sorting:
-        tfidf = TfIdfLen([passage.nouns for passage in passages])
-        for passage in passages:
-            passage.noun_sort(tfidf, inplace=True, reverse=True)
-    
+        metrics = tfidf.transform(passages)
+        for i, passage in enumerate(passages):
+            passage.noun_sort(metrics[i], inplace=True, reverse=True)
     return passages
 
 class Passage:
