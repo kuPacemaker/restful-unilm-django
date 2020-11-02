@@ -6,6 +6,7 @@ class SquadTfIdf:
 
     def __init__(self):
         self.vectorizer = SquadTfidfVectorizer.load()
+        self.vocab = set(self.vectorizer.get_feature_names())
 
     def transform(self, docs):
         vectors = self.vectorizer.transform(docs)

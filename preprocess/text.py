@@ -5,12 +5,13 @@ from .metric import SquadTfIdf
 def passaginate(text, max_words, noun_sorting=False):
     psgs = psg_split(text, max_words)
     passages = list(map(Passage, psgs))
-    tfidf = SquadTfIdf()
+    metric = SquadTfIdf()
+    vocab = metric.vocab
 
     if noun_sorting:
-        metrics = tfidf.transform(passages)
+        scores = metric.transform(passages)
         for i, passage in enumerate(passages):
-            passage.noun_sort(metrics[i], inplace=True, reverse=True)
+            passage.noun_sort(scores[i], vocab=vocab, inplace=True, reverse=True)
     return passages
 
 class Passage:
@@ -19,9 +20,13 @@ class Passage:
         self.text = text
         self.nouns = noun_extract(text)
     
-    def noun_sort(self, metric, inplace=True, reverse=True):
-        score = metric.fit_transform(self.nouns)
-        noun_score = [(noun, score[noun]) for noun in set(self.nouns)]
+    def noun_sort(self, score, vocab=None, inplace=True, reverse=True):
+        nouns = set(self.nouns)
+        
+        if vocab is not None :
+            nouns &= vocab
+
+        noun_score = [(noun, score[noun]) for noun in nouns]
         sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
 
