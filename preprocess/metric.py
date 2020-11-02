@@ -23,6 +23,7 @@ class SquadTfIdf:
         return tfidfs
 
 class TfIdfLen:
+    
     def __init__(self, word_lists):
         self.idf = dict()
         self.num_docs = max(len(word_lists), 2)
