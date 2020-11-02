@@ -14,8 +14,15 @@ def question_generation(request):
         bkd = BaseKnowledge(request.data['bkd'])
         RemoteApi.call(QGProtocol(bkd))
         return Response(bkd.jsonate())
-    return Response({"message": "The GET method is not appropriate."})
+    return Response({"message": "The %s method is not appropriate." % request.method})
 
+@api_view(['POST'])
+def noun_extraction(request):
+    if request.method == 'POST':
+        bkd = BaseKnowledge(request.data['bkd'])
+        bkd.nouns = bkd.nouns[3 + int(3 / len(bkd.passages))]
+        return Response(bkd.jsonate())
+    return Response({"message": "The %s method is not appropriate." % request.method})
 
 def zero_ssl(request, filename):
     fsock = open(filename, "rb")
