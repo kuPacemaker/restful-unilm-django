@@ -7,7 +7,7 @@ class QGProtocol(AbstractProtocol):
 
     def __init__(self, bkd: BaseKnowledge, num_case=None):
         self.bkd = bkd
-        self.num_case = num_case if num_case is not None else 3 + int(3/len(self.bkd.passages))
+        self.num_case = num_case if num_case is not None else bkd.prune_nouns_amount()
         self.answers = None
         self.response_attach_head = 0
 

@@ -30,7 +30,7 @@ class BaseKnowledge:
             passage.nouns = passage.nouns[amount]
     
     def prune_nouns_amount(self):
-        return 3 + int(3 / len(bkd.passages))
+        return 3 + int(3 / len(self.passages))
 
     def jsonate(self):
         return json.loads(json.dumps(self, default=lambda o: o.__dict__, indent = 4))
