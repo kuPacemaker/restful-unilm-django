@@ -25,8 +25,9 @@ class BaseKnowledge:
         self.passages = [top_passage]
         
     def prune_nouns(self):
-        amount = self.prune_nouns_amount()
+        global_amount = self.prune_nouns_amount()
         for passage in self.passages:
+            amount = min(len(passage.nouns), global_amount)
             passage.nouns = passage.nouns[amount]
     
     def prune_nouns_amount(self):
