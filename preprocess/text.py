@@ -20,12 +20,12 @@ class Passage:
         self.text = text
         self.nouns = noun_extract(text)
     
-    def noun_sort(self, score, vocab=None, inplace=True, reverse=True):
-        nouns = set([noun.lower() for noun in self.nouns])
-        if vocab is not None :
-            nouns &= vocab
+    def noun_sort(self, score, vocab, inplace=True, reverse=True):
+        nouns = self.nouns
+        lower_nouns = [noun.lower() for noun in nouns]
+        nouns_in_vocab = vocab & set(lower_nouns)
 
-        noun_score = [(noun, score[noun]) for noun in nouns]
+        noun_score = [(noun, score[lower_noun]) for lower_noun, noun in zip(lower_nouns, nouns) if lower_noun in nouns_in_vocab]
         sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
 
