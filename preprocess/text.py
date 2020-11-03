@@ -25,8 +25,8 @@ class Passage:
         lower_nouns = [noun.lower() for noun in nouns]
         nouns_in_vocab = vocab & set(lower_nouns)
 
-        noun_score = [(noun, score[lower_noun]) for lower_noun, noun in zip(lower_nouns, nouns) if lower_noun in nouns_in_vocab]
-        sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
+        noun_score = {noun : score[lower_noun] for lower_noun, noun in zip(lower_nouns, nouns) if lower_noun in nouns_in_vocab}
+        sorted_noun_score = sorted(noun_score.items(), key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
 
         if inplace:
