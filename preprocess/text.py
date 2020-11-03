@@ -25,7 +25,7 @@ class Passage:
         if vocab is not None :
             nouns &= vocab
 
-        noun_score = [(noun, score[noun]) for noun in nouns]
+        noun_score = [(noun, score[noun.lower()]) for noun in nouns]
         sorted_noun_score = sorted(noun_score, key=lambda x: x[1], reverse=reverse)
         sorted_nouns = [noun for noun, score in sorted_noun_score]
 

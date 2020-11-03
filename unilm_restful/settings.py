@@ -134,3 +134,22 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     'https://kupacemaker.github.io'
 ]
+
+DEFAULT_BKD_NOUNS = lambda bkd: 3 + int(3 / len(bkd.passages))
+INTERFACE_CONFIG = {
+    'QG': {
+        'words-per-passage': 120,
+        'nouns-per-passage': DEFAULT_BKD_NOUNS,
+        'sets-per-query': DEFAULT_BKD_NOUNS,
+        'do-noun-sort': True,
+    },
+    'QA': {
+        'words-per-passage': 150,
+        'sets-per-query': 3,
+    },
+    'GQQA': {
+        'words-per-passage': 120,
+        'nouns-per-passage': DEFAULT_BKD_NOUNS,
+        'sets-per-query': DEFAULT_BKD_NOUNS,
+    }
+}
