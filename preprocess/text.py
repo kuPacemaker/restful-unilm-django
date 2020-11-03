@@ -21,7 +21,7 @@ class Passage:
         self.nouns = noun_extract(text)
     
     def noun_sort(self, score, vocab=None, inplace=True, reverse=True):
-        nouns = set([noun.lower for noun in self.nouns])
+        nouns = set([noun.lower() for noun in self.nouns])
         if vocab is not None :
             nouns &= vocab
 
