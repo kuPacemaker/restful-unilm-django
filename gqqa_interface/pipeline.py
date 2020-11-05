@@ -56,7 +56,7 @@ class PipelineUnit:
 
     def run(self, n_works):
         while n_works:
-            waiting.wait(lambda: len(self.queue) > 0)
+            self.wait_entry()
 
             input = self.queue.popleft()
             result = self.process(input)
@@ -67,6 +67,12 @@ class PipelineUnit:
                 self.result_queue.append(result)
 
             n_works = n_works - 1
+
+    def wait_entry():
+        try:
+            waiting.wait(lambda: len(self.queue) > 0, timeout_seconds=240)
+        except TimeoutExpired:
+            break
 
     def enqueue(self, input):
         self.queue.append(input)
