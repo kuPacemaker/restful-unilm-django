@@ -24,6 +24,6 @@ def noun_extraction(request):
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 
-def zero_ssl(request, filename):
-    fsock = open(filename, "rb")
-    return HttpResponse(fsock, content_type='text/plain')
+# def zero_ssl(request, filename):
+#     fsock = open(filename, "rb")
+#     return HttpResponse(fsock, content_type='text/plain')
