@@ -29,8 +29,7 @@ SECRET_KEY = 'gvuryv$m47n5(^=j%8bu%@xqbi1pw__#%atj^rk3ti#5%eg16!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['117.16.136.171', 'kupacemaker.github.io', '127.0.0.1']
-
+ALLOWED_HOSTS = ['117.16.136.171', 'kupacemaker.github.io', '127.0.0.1', '117.16.136.170']
 
 # Application definition
 
