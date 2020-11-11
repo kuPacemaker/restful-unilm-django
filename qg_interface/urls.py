@@ -20,4 +20,5 @@ from . import views
 urlpatterns = [
     path('', views.question_generation, name='qg'),
     path('nouns', views.noun_extraction, name='qg_nouns'),
+    path('bible_nouns', views.bible_noun_extraction, name='qg_bible_nouns')
 ]

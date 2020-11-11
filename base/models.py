@@ -5,9 +5,9 @@ import json
 # Create your models here.
 class BaseKnowledge:
     
-    def __init__(self, text, passage_num_words=120):
+    def __init__(self, text, passage_num_words=120, vectorizer='squad'):
         text = text.replace('\n', '')
-        self.passages = passaginate(text, noun_sorting=True, max_words=passage_num_words)
+        self.passages = passaginate(text, passage_num_words, vectorizer, noun_sorting=True)
         self.nouns = list(reduce(lambda x, y: set(x) | set(y), 
                             [p.nouns for p in self.passages]))
 

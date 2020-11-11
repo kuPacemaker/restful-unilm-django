@@ -24,6 +24,14 @@ def noun_extraction(request):
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 
+@api_view(['POST'])
+def bible_noun_extraction(request):
+    if request.method == 'POST':
+        bkd = BaseKnowledge(request.data['bkd'], vectorizer='bible')
+        bkd.prune_nouns()
+        return Response(bkd.jsonate())
+    return Response({"message": "The %s method is not appropriate." % request.method})
+
 # def zero_ssl(request, filename):
 #     fsock = open(filename, "rb")
 #     return HttpResponse(fsock, content_type='text/plain')

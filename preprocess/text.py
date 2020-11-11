@@ -1,11 +1,11 @@
 import nltk
 from textblob import TextBlob
-from .metric import SquadTfIdf
+from .metric import SquadTfIdf, BibleTfIdf
 
-def passaginate(text, max_words, noun_sorting=False):
+def passaginate(text, max_words, vectorizer, noun_sorting=False):
     psgs = psg_split(text, max_words)
     passages = list(map(Passage, psgs))
-    metric = SquadTfIdf()
+    metric = SquadTfIdf() if vectorizer == 'squad' else BibleTfIdf
     vocab = metric.vocab
 
     if noun_sorting:

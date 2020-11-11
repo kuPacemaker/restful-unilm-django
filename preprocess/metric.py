@@ -1,6 +1,6 @@
 from collections import Counter
 import math
-from .pretrained import SquadTfidfVectorizer
+from .pretrained import SquadTfidfVectorizer, BibleTfidfVectorizer
 
 class SquadTfIdf:
 
@@ -21,6 +21,12 @@ class SquadTfIdf:
                 tfidf[words[doc_id][feature_id]] = vector.data[feature_id]
             tfidfs.append(tfidf)
         return tfidfs
+
+class BibleTfIdf(SquadTfIdf):
+    
+    def __init__(self):
+        self.vectorizer = BibleTfidfVectorizer.load()
+        self.vocab = set(self.vectorizer.get_feature_names())
 
 # class TfIdfLen:
 
