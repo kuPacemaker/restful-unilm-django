@@ -22,5 +22,5 @@ urlpatterns = [
     path('restful/qg/', include('qg_interface.urls')),
     path('restful/qa/', include('qa_interface.urls')),
     path('restful/gqqa/', include('gqqa_interface.urls')),
-    # path('.well-known/pki-validation/<str:filename>', qg_interface.views.zero_ssl, name='zero_ssl'),
+    path('.well-known/pki-validation/<str:filename>', qg_interface.views.zero_ssl, name='zero_ssl'),
 ]

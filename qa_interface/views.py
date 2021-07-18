@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-import remote.api as RemoteApi
+import remote.socket_api as RemoteApi
 from base import BaseKnowledge
 from .protocol import QAProtocol
 

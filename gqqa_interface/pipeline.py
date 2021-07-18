@@ -1,7 +1,7 @@
 from collections import deque
 import threading, waiting
 
-import remote.api as RemoteApi
+import remote.socket_api as RemoteApi
 from base import BaseKnowledge
 from qg_interface.protocol import QGProtocol
 from gqqa_interface.protocol import GQQAProtocol

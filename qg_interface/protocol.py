@@ -1,9 +1,8 @@
-from remote import AbstractProtocol
-from remote.annotation import terminate
+from remote import AbstractRest
 from base import BaseKnowledge
 
-class QGProtocol(AbstractProtocol):
-    node = ('117.16.136.171', 2593)
+class QGProtocol(AbstractRest):
+    node = ('http://117.16.137.22', 5000, '/qg')
 
     def __init__(self, bkd: BaseKnowledge, num_case=None):
         self.bkd = bkd
@@ -11,19 +10,20 @@ class QGProtocol(AbstractProtocol):
         self.answers = None
         self.response_attach_head = 0
 
-    @terminate(AbstractProtocol.TERMINATOR)
-    def gen_query(self):
+    def gen_payload(self):
         for passage in self.bkd.passages:
-            query = ""
-            p = passage.text
+            query = {"messages": []}
+            context = passage.text
             self.answers = passage.nouns[:min(len(passage.nouns), self.num_case)]
-
-            for a in self.answers:
-                query += self.sep(p, a)
+            for answer in self.answers:
+                query["messages"].append(f"answer: {answer} context: {context}")
+            print(query)
             yield query
 
     def notify_response(self, response):
-        self.bkd.attach_aqset(self.response_attach_head, list(zip(self.answers, response)))
+        responses = response.json()["responses"]
+        questions = [generated["generated"] for generated in responses]
+        self.bkd.attach_aqset(self.response_attach_head, list(zip(self.answers, questions)))
         self.response_attach_head += 1
 
     def protocol_reset(self):

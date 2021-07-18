@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-import remote.api as RemoteApi
+import remote.requests_api as RemoteApi
 from base import BaseKnowledge
 from .protocol import QGProtocol
 
@@ -24,6 +24,6 @@ def noun_extraction(request):
         return Response(bkd.jsonate())
     return Response({"message": "The %s method is not appropriate." % request.method})
 
-# def zero_ssl(request, filename):
-#     fsock = open(filename, "rb")
-#     return HttpResponse(fsock, content_type='text/plain')
+def zero_ssl(request, filename):
+    fsock = open(filename, "rb")
+    return HttpResponse(fsock, content_type='text/plain')
