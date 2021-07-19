@@ -8,7 +8,7 @@ def passaginate(text, max_words, noun_sorting=False):
     metric = SquadTfIdf()
     vocab = metric.vocab
 
-    if noun_sorting:
+    if noun_sorting and text != '':
         scores = metric.transform(psgs)
         for i, passage in enumerate(passages):
             passage.noun_sort(scores[i], vocab=vocab, inplace=True, reverse=True)

@@ -7,9 +7,12 @@ class BaseKnowledge:
     
     def __init__(self, text, passage_num_words=120):
         text = text.replace('\n', '')
-        self.passages = passaginate(text, noun_sorting=True, max_words=passage_num_words)
-        self.nouns = list(reduce(lambda x, y: set(x) | set(y), 
-                            [p.nouns for p in self.passages]))
+        try:
+            self.passages = passaginate(text, noun_sorting=True, max_words=passage_num_words)
+            self.nouns = list(reduce(lambda x, y: set(x) | set(y), 
+                                [p.nouns for p in self.passages]))
+        except:
+            raise Exception('E_EMPTY_STRING')
 
     def all_text(self):
         return [passage.text for passage in self.passages]

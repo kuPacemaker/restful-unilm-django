@@ -27,9 +27,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'gvuryv$m47n5(^=j%8bu%@xqbi1pw__#%atj^rk3ti#5%eg16!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['117.16.136.171', 'kupacemaker.github.io', '127.0.0.1', '117.16.136.170', '*']
+ALLOWED_HOSTS = ['kupacemaker.github.io', 'klumy.github.io','127.0.0.1', '117.16.137.22']
 
 # Application definition
 
@@ -133,7 +133,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = [
     'https://kupacemaker.github.io'
 ]
